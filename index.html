@@ -207,13 +207,65 @@ main{max-width:1200px;margin:auto;padding:24px 18px 50px}.view{display:none}.vie
   .authCard{padding:15px}
 }
 </style>
+<style id="desktop-view-required">
+/* Desktop-only experience: mobile browsers receive a clear instruction screen. */
+.desktopViewNotice{display:none}
+@media(max-width:900px){
+  html,body{min-height:100%;overflow:hidden}
+  .desktopViewNotice{
+    display:flex!important;position:fixed!important;inset:0!important;
+    z-index:2147483647!important;background:#eef2ff!important;
+    align-items:center!important;justify-content:center!important;
+    padding:20px!important;overflow:auto!important;
+  }
+  body>*:not(.desktopViewNotice){visibility:hidden!important;pointer-events:none!important}
+  .desktopViewNoticeCard{
+    width:min(500px,100%);background:#fff;border:1px solid #dfe5f0;
+    border-radius:24px;padding:30px 24px;text-align:center;
+    box-shadow:0 24px 70px rgba(23,32,51,.16);
+  }
+  .desktopViewNoticeIcon{
+    width:68px;height:68px;border-radius:18px;background:#eef2ff;color:#3559e0;
+    display:grid;place-items:center;margin:0 auto 14px;font-size:34px;
+  }
+  .desktopViewNoticeKicker{
+    color:#3559e0;font-size:10px;font-weight:900;letter-spacing:.14em;margin-bottom:7px;
+  }
+  .desktopViewNotice h2{margin:0 0 10px;font-size:24px;color:#172033}
+  .desktopViewNoticeLead{margin:0;color:#667085;font-size:13px;line-height:1.6}
+  .desktopSteps{display:grid;gap:9px;text-align:left;margin:20px 0 14px}
+  .desktopStep{
+    padding:13px 14px;border:1px solid #e2e7ef;border-radius:13px;background:#f7f9fc;
+    color:#172033;font-size:12px;line-height:1.5;
+  }
+  .desktopStep b{display:block;margin-bottom:3px}
+  .desktopStep span{color:#667085}
+  .desktopRefreshBtn{width:100%;min-height:46px;margin-top:2px}
+  .desktopViewHint{margin:11px 0 0;color:#8a93a3;font-size:10px;line-height:1.5}
+}
+</style>
 </head>
 <body>
 <div class="desktopViewNotice" role="dialog" aria-modal="true" aria-labelledby="desktopViewTitle">
   <div class="desktopViewNoticeCard">
     <div class="desktopViewNoticeIcon">🖥️</div>
-    <h2 id="desktopViewTitle">Please switch to Desktop View</h2>
-    <p>Rent &amp; Reuse is designed for a <b>desktop browser</b> for the best experience. Please open your browser menu and choose <b>Desktop site / Desktop view</b>, then refresh this page.</p>
+    <div class="desktopViewNoticeKicker">DESKTOP VIEW REQUIRED</div>
+    <h2 id="desktopViewTitle">Please switch to Desktop Site</h2>
+    <p class="desktopViewNoticeLead">Rent &amp; Reuse is designed for a desktop browser. Your phone cannot switch this setting automatically, so please turn on <b>Desktop site</b> in your browser.</p>
+
+    <div class="desktopViewSteps">
+      <div class="desktopStep">
+        <b>📱 Android · Chrome</b>
+        <span>Tap <b>⋮</b> → turn on <b>Desktop site</b> → return here.</span>
+      </div>
+      <div class="desktopStep">
+        <b>🍎 iPhone · Safari</b>
+        <span>Tap <b>aA</b> → <b>Request Desktop Website</b> → return here.</span>
+      </div>
+    </div>
+
+    <button class="btn primary desktopRefreshBtn" type="button" onclick="location.reload()">↻ I switched — Refresh page</button>
+    <p class="desktopViewHint">If you already switched to Desktop site, tap the button above. If this message remains, make sure your browser's Desktop site setting is enabled.</p>
   </div>
 </div>
 
