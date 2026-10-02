@@ -210,24 +210,6 @@ main{max-width:1200px;margin:auto;padding:24px 18px 50px}.view{display:none}.vie
 
 </head>
 <body>
-<div class="desktopViewNotice" role="dialog" aria-modal="true" aria-labelledby="desktopViewTitle">
-  <div class="desktopViewNoticeCard">
-    <div class="desktopViewNoticeIcon">🖥️</div>
-    <h2 id="desktopViewTitle">Please switch to Desktop View</h2>
-    <p>Rent &amp; Reuse is designed for a <b>desktop browser</b> for the best experience. Please open your browser menu and choose <b>Desktop site / Desktop view</b>, then refresh this page.</p>
-  </div>
-</div>
-      <div class="desktopStep">
-        <b>🍎 iPhone · Safari</b>
-        <span>Tap <b>aA</b> → <b>Request Desktop Website</b> → return here.</span>
-      </div>
-    </div>
-
-    <button class="btn primary desktopRefreshBtn" type="button" onclick="location.reload()">↻ I switched — Refresh page</button>
-    <p class="desktopViewHint">If you already switched to Desktop site, tap the button above. If this message remains, make sure your browser's Desktop site setting is enabled.</p>
-  </div>
-</div>
-
 <div id="authScreen" class="authScreen"><div class="authCard"><div class="authBrand"><span class="logo">↻</span><div><b>Rent & Reuse</b><small>Student sharing platform</small></div></div><div class="authTabs"><button id="loginTab" class="authTab active" onclick="authMode('login')">Sign in</button><button id="signupTab" class="authTab" onclick="authMode('signup')">Create account</button></div><div id="loginForm"><h2>Welcome back 👋</h2><p class="muted">Sign in to borrow, rent and share with students.</p><input id="loginEmail" class="field" type="email" placeholder="College email"><input id="loginPass" class="field" type="password" placeholder="Password" style="margin-top:9px"><button class="btn primary authBtn" onclick="login()">Sign in</button><p class="authHint">New student? <button class="linkBtn" onclick="authMode('signup')">Create an account</button></p></div><div id="signupForm" style="display:none"><h2>Create your student account</h2><p class="muted">Your student profile is securely connected to your Supabase account.</p><div class="authGrid"><input id="suName" class="field" placeholder="Full name"><input id="suEmail" class="field" type="email" placeholder="College email"><input id="suPhone" class="field" type="tel" placeholder="Phone number"><input id="suDept" class="field" placeholder="Department"><input id="suYear" class="field" placeholder="Year (e.g. 1st Year)"><input id="suHostel" class="field" placeholder="Hostel / Block"><input id="suPass" class="field" type="password" placeholder="Create password"><input id="suConfirm" class="field" type="password" placeholder="Confirm password"></div><label class="check"><input id="suConsent" type="checkbox"> I agree to share my contact details only when appropriate for an exchange.</label><button id="createAccountBtn" type="button" class="btn primary authBtn" onclick="signup()">Create student account</button><div id="signupStatus" style="display:none;margin-top:10px;padding:10px 12px;border-radius:10px;background:#eef3ff;color:#304a9d;font-size:12px;line-height:1.45;"></div><p class="authHint">Already registered? <button class="linkBtn" onclick="authMode('login')">Sign in</button></p></div><div class="demoNote">Connected to Supabase: accounts, listings, requests and photos are shared across students and devices.</div></div></div>
 <header><nav>
 <a class="brand" href="#" onclick="show('home');return false"><span class="logo">↻</span><span>Rent & Reuse<small>Campus sharing platform</small></span></a>
