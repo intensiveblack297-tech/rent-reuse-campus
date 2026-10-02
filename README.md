@@ -1,21 +1,28 @@
-# Rent & Reuse
+# Rent & Reuse — Campus Sharing Platform v2
 
-A responsive student-first campus marketplace based on the Rent & Reuse problem statement.
+A polished static prototype for a campus Rent & Reuse platform.
 
-## Features
-- Browse, search, filter and sort campus items
-- Request to rent or borrow items
-- Owner trust/profile information
-- Post unused items
-- Favorites and activity counters
-- LocalStorage persistence
-- Responsive desktop/mobile UI
+## What changed in v2
+- Student dashboard for listings and activity
+- Search, category/type filters and sorting
+- Borrow vs Rent flow
+- Request → Accept/Reject workflow
+- “Need something?” requirement board
+- Wishlist/favorites
+- Verified-student and trust/safety UI
+- Owner ratings and item condition
+- Campus-specific locations
+- Responsive mobile/desktop design
+- LocalStorage persistence for the prototype
 
-## Tech
-HTML5, CSS3, vanilla JavaScript and browser LocalStorage.
+## Technology
+HTML, CSS and vanilla JavaScript. No backend or external framework is required for the prototype.
 
-## Run locally
-Open `index.html` in a browser.
+## GitHub Pages
+The repository is configured to deploy automatically from the `main` branch using GitHub Actions.
 
-## Deployment
-Static site suitable for GitHub Pages or other static hosting.
+Expected URL:
+https://intensiveblack297-tech.github.io/rent-reuse-campus/
+
+## Prototype limitation
+LocalStorage stores data only in the current browser/device. A production version can connect the UI to Firebase, Supabase or another backend for real accounts, synchronized requests, messaging, authentication and database storage.
