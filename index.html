@@ -331,6 +331,7 @@ async function login(){
 }
 
 async function signup(){
+  const btn=document.querySelector('#signupForm .authBtn');
   const name=suName.value.trim();
   const email=suEmail.value.trim().toLowerCase();
   const phone=suPhone.value.trim();
@@ -340,36 +341,64 @@ async function signup(){
   const password=suPass.value;
   const confirm=suConfirm.value;
 
-  if(!name||!email||!phone||!department||!yearText||!password)
+  if(!name||!email||!phone||!department||!yearText||!hostel||!password)
     return toast('Please complete all student details.');
+  if(!suEmail.checkValidity()) return toast('Please enter a valid email address.');
   if(password!==confirm) return toast('Passwords do not match.');
   if(!suConsent.checked) return toast('Please accept the contact-sharing note.');
   if(password.length<6) return toast('Password must be at least 6 characters.');
 
   const yearMatch=yearText.match(/\d+/);
   const year=yearMatch ? Number(yearMatch[0]) : null;
+  if(!year || year<1 || year>8) return toast('Please enter a valid study year, such as 1st Year.');
 
-  const {data,error}=await supabaseClient.auth.signUp({
-    email,
-    password,
-    options:{
-      data:{
-        name,
-        phone,
-        department,
-        year,
-        hostel
+  if(btn){
+    btn.disabled=true;
+    btn.textContent='Creating account...';
+    btn.style.opacity='.7';
+  }
+
+  try{
+    const {data,error}=await supabaseClient.auth.signUp({
+      email,
+      password,
+      options:{
+        data:{
+          name,
+          phone,
+          department,
+          year,
+          hostel
+        }
       }
+    });
+
+    if(error){
+      console.error('Signup error:',error);
+      return toast(error.message || 'Could not create your account.');
     }
-  });
 
-  if(error) return toast(error.message);
+    if(data.user && Array.isArray(data.user.identities) && data.user.identities.length===0){
+      return toast('An account with this email already exists. Please sign in instead.');
+    }
 
-  if(data.session){
-    toast('Account created successfully.');
-  }else{
-    toast('Account created. Check your email to confirm, then sign in.');
-    authMode('login');
+    if(data.session){
+      await bootSignedIn(data.user);
+      toast('Account created successfully. Welcome to Rent & Reuse!');
+    }else{
+      authMode('login');
+      document.getElementById('loginEmail').value=email;
+      toast('Account created. Check your email and confirm it before signing in.');
+    }
+  }catch(err){
+    console.error('Unexpected signup error:',err);
+    toast(err?.message || 'Something went wrong while creating the account.');
+  }finally{
+    if(btn){
+      btn.disabled=false;
+      btn.textContent='Create student account';
+      btn.style.opacity='';
+    }
   }
 }
 
