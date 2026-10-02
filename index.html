@@ -119,6 +119,10 @@ function openModal(id){ document.getElementById(id).classList.add('open'); }
 function closeModal(id){ document.getElementById(id).classList.remove('open'); }
 
 function show(id){
+  if(id==='requests'){
+    notificationCount=0;
+    const nb=document.getElementById('notifyBadge'); if(nb) nb.style.display='none';
+  }
   document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));
   document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.v===id));
   window.scrollTo({top:0,behavior:'smooth'});
@@ -728,8 +732,6 @@ function requestRow(r,received=false){
 }
 
 function renderRequests(){
-  notificationCount=0;
-  const nb=document.getElementById('notifyBadge'); if(nb) nb.style.display='none';
   const mine=requests.filter(r=>r.borrower_id===currentProfile.id);
   const received=requests.filter(r=>r.owner_id===currentProfile.id);
   const pendingReceived=received.filter(r=>r.status==='pending').length;
