@@ -123,3 +123,7 @@ for each row
 execute function private.validate_request_row();
 
 select 'Rent & Reuse security patch completed successfully.' as message;
+
+
+-- Enable realtime request events for live in-app notifications.
+alter publication supabase_realtime add table public.requests;
