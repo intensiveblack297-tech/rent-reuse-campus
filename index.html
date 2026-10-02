@@ -104,7 +104,7 @@ main{max-width:1200px;margin:auto;padding:24px 18px 50px}.view{display:none}.vie
 .handoverBtn{font-weight:900;min-height:44px}.actionButtons .outline{min-height:44px}</style>
 </head>
 <body>
-<div id="authScreen" class="authScreen"><div class="authCard"><div class="authBrand"><span class="logo">↻</span><div><b>Rent & Reuse</b><small>Student sharing platform</small></div></div><div class="authTabs"><button id="loginTab" class="authTab active" onclick="authMode('login')">Sign in</button><button id="signupTab" class="authTab" onclick="authMode('signup')">Create account</button></div><div id="loginForm"><h2>Welcome back 👋</h2><p class="muted">Sign in to borrow, rent and share with students.</p><input id="loginEmail" class="field" type="email" placeholder="College email"><input id="loginPass" class="field" type="password" placeholder="Password" style="margin-top:9px"><button class="btn primary authBtn" onclick="login()">Sign in</button><p class="authHint">New student? <button class="linkBtn" onclick="authMode('signup')">Create an account</button></p></div><div id="signupForm" style="display:none"><h2>Create your student account</h2><p class="muted">Your student profile is securely connected to your Supabase account.</p><div class="authGrid"><input id="suName" class="field" placeholder="Full name"><input id="suEmail" class="field" type="email" placeholder="College email"><input id="suPhone" class="field" type="tel" placeholder="Phone number"><input id="suDept" class="field" placeholder="Department"><input id="suYear" class="field" placeholder="Year (e.g. 1st Year)"><input id="suHostel" class="field" placeholder="Hostel / Block"><input id="suPass" class="field" type="password" placeholder="Create password"><input id="suConfirm" class="field" type="password" placeholder="Confirm password"></div><label class="check"><input id="suConsent" type="checkbox"> I agree to share my contact details only when appropriate for an exchange.</label><button class="btn primary authBtn" onclick="signup()">Create student account</button><p class="authHint">Already registered? <button class="linkBtn" onclick="authMode('login')">Sign in</button></p></div><div class="demoNote">Connected to Supabase: accounts, listings, requests and photos are shared across students and devices.</div></div></div>
+<div id="authScreen" class="authScreen"><div class="authCard"><div class="authBrand"><span class="logo">↻</span><div><b>Rent & Reuse</b><small>Student sharing platform</small></div></div><div class="authTabs"><button id="loginTab" class="authTab active" onclick="authMode('login')">Sign in</button><button id="signupTab" class="authTab" onclick="authMode('signup')">Create account</button></div><div id="loginForm"><h2>Welcome back 👋</h2><p class="muted">Sign in to borrow, rent and share with students.</p><input id="loginEmail" class="field" type="email" placeholder="College email"><input id="loginPass" class="field" type="password" placeholder="Password" style="margin-top:9px"><button class="btn primary authBtn" onclick="login()">Sign in</button><p class="authHint">New student? <button class="linkBtn" onclick="authMode('signup')">Create an account</button></p></div><div id="signupForm" style="display:none"><h2>Create your student account</h2><p class="muted">Your student profile is securely connected to your Supabase account.</p><div class="authGrid"><input id="suName" class="field" placeholder="Full name"><input id="suEmail" class="field" type="email" placeholder="College email"><input id="suPhone" class="field" type="tel" placeholder="Phone number"><input id="suDept" class="field" placeholder="Department"><input id="suYear" class="field" placeholder="Year (e.g. 1st Year)"><input id="suHostel" class="field" placeholder="Hostel / Block"><input id="suPass" class="field" type="password" placeholder="Create password"><input id="suConfirm" class="field" type="password" placeholder="Confirm password"></div><label class="check"><input id="suConsent" type="checkbox"> I agree to share my contact details only when appropriate for an exchange.</label><button id="createAccountBtn" type="button" class="btn primary authBtn" onclick="signup()">Create student account</button><div id="signupStatus" style="display:none;margin-top:10px;padding:10px 12px;border-radius:10px;background:#eef3ff;color:#304a9d;font-size:12px;line-height:1.45;"></div><p class="authHint">Already registered? <button class="linkBtn" onclick="authMode('login')">Sign in</button></p></div><div class="demoNote">Connected to Supabase: accounts, listings, requests and photos are shared across students and devices.</div></div></div>
 <header><nav>
 <a class="brand" href="#" onclick="show('home');return false"><span class="logo">↻</span><span>Rent & Reuse<small>Campus sharing platform</small></span></a>
 <div class="nav"><button class="active" data-v="home" onclick="show('home')">Browse</button><button data-v="dashboard" onclick="show('dashboard')">Dashboard</button><button class="navReq" data-v="requests" onclick="show('requests')">Requests<span id="requestsBadge" class="navBadge">0</span><span id="notifyBadge" class="navBadge notifyBadge">0</span></button><button data-v="needs" onclick="show('needs')">Needs</button><button data-v="profile" onclick="show('profile')">Profile</button></div>
@@ -330,8 +330,19 @@ async function login(){
   toast('Signed in successfully.');
 }
 
+function setSignupStatus(message, isError=false){
+  const box=document.getElementById('signupStatus');
+  if(!box) return;
+  box.textContent=message;
+  box.style.display='block';
+  box.style.background=isError?'#ffe8e8':'#eef3ff';
+  box.style.color=isError?'#a52b2b':'#304a9d';
+}
+
 async function signup(){
-  const btn=document.querySelector('#signupForm .authBtn');
+  const btn=document.getElementById('createAccountBtn') || document.querySelector('#signupForm .authBtn');
+  setSignupStatus('Checking your details...');
+
   const suNameEl=document.getElementById('suName');
   const suEmailEl=document.getElementById('suEmail');
   const suPhoneEl=document.getElementById('suPhone');
@@ -343,6 +354,7 @@ async function signup(){
   const suConsentEl=document.getElementById('suConsent');
 
   if(!suNameEl||!suEmailEl||!suPhoneEl||!suDeptEl||!suYearEl||!suHostelEl||!suPassEl||!suConfirmEl||!suConsentEl){
+    setSignupStatus('Signup form could not be loaded. Please refresh the page.', true);
     return toast('Signup form could not be loaded. Please refresh the page.');
   }
 
@@ -355,20 +367,38 @@ async function signup(){
   const password=suPassEl.value;
   const confirm=suConfirmEl.value;
 
-  if(!name||!email||!phone||!department||!yearText||!hostel||!password)
+  if(!name||!email||!phone||!department||!yearText||!hostel||!password){
+    setSignupStatus('Please complete all student details.', true);
     return toast('Please complete all student details.');
-  if(!suEmailEl.checkValidity()) return toast('Please enter a valid email address.');
-  if(password!==confirm) return toast('Passwords do not match.');
-  if(!suConsentEl.checked) return toast('Please accept the contact-sharing note.');
-  if(password.length<6) return toast('Password must be at least 6 characters.');
+  }
+  if(!suEmailEl.checkValidity()){
+    setSignupStatus('Please enter a valid email address.', true);
+    return toast('Please enter a valid email address.');
+  }
+  if(password!==confirm){
+    setSignupStatus('Passwords do not match.', true);
+    return toast('Passwords do not match.');
+  }
+  if(!suConsentEl.checked){
+    setSignupStatus('Please accept the contact-sharing note.', true);
+    return toast('Please accept the contact-sharing note.');
+  }
+  if(password.length<6){
+    setSignupStatus('Password must be at least 6 characters.', true);
+    return toast('Password must be at least 6 characters.');
+  }
 
   const yearMatch=yearText.match(/\d+/);
   const year=yearMatch ? Number(yearMatch[0]) : null;
-  if(!year || year<1 || year>8) return toast('Please enter a valid study year, such as 1st Year.');
+  if(!year || year<1 || year>8){
+    setSignupStatus('Please enter a valid study year, such as 1st Year.', true);
+    return toast('Please enter a valid study year, such as 1st Year.');
+  }
 
   if(btn){
     btn.disabled=true;
     btn.textContent='Creating account...';
+    setSignupStatus('Creating your student account. Please wait...');
     btn.style.opacity='.7';
   }
 
@@ -389,23 +419,28 @@ async function signup(){
 
     if(error){
       console.error('Signup error:',error);
+      setSignupStatus(error.message || 'Could not create your account.', true);
       return toast(error.message || 'Could not create your account.');
     }
 
     if(data.user && Array.isArray(data.user.identities) && data.user.identities.length===0){
+      setSignupStatus('An account with this email already exists. Please sign in instead.', true);
       return toast('An account with this email already exists. Please sign in instead.');
     }
 
     if(data.session){
       await bootSignedIn(data.user);
+      setSignupStatus('Account created successfully. Welcome to Rent & Reuse!');
       toast('Account created successfully. Welcome to Rent & Reuse!');
     }else{
       authMode('login');
       document.getElementById('loginEmail').value=email;
+      setSignupStatus('Account created. Check your email and confirm it before signing in.');
       toast('Account created. Check your email and confirm it before signing in.');
     }
   }catch(err){
     console.error('Unexpected signup error:',err);
+    setSignupStatus(err?.message || 'Something went wrong while creating the account.', true);
     toast(err?.message || 'Something went wrong while creating the account.');
   }finally{
     if(btn){
