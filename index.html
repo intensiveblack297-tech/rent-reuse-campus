@@ -101,7 +101,7 @@ main{max-width:1200px;margin:auto;padding:24px 18px 50px}.view{display:none}.vie
   nav>.btn.primary{font-size:11px;padding:8px}
   .hero h1{font-size:30px}
 }
-</style>
+.handoverBtn{font-weight:900;min-height:44px}.actionButtons .outline{min-height:44px}</style>
 </head>
 <body>
 <div id="authScreen" class="authScreen"><div class="authCard"><div class="authBrand"><span class="logo">↻</span><div><b>Rent & Reuse</b><small>Student sharing platform</small></div></div><div class="authTabs"><button id="loginTab" class="authTab active" onclick="authMode('login')">Sign in</button><button id="signupTab" class="authTab" onclick="authMode('signup')">Create account</button></div><div id="loginForm"><h2>Welcome back 👋</h2><p class="muted">Sign in to borrow, rent and share with students.</p><input id="loginEmail" class="field" type="email" placeholder="College email"><input id="loginPass" class="field" type="password" placeholder="Password" style="margin-top:9px"><button class="btn primary authBtn" onclick="login()">Sign in</button><p class="authHint">New student? <button class="linkBtn" onclick="authMode('signup')">Create an account</button></p></div><div id="signupForm" style="display:none"><h2>Create your student account</h2><p class="muted">Your student profile is securely connected to your Supabase account.</p><div class="authGrid"><input id="suName" class="field" placeholder="Full name"><input id="suEmail" class="field" type="email" placeholder="College email"><input id="suPhone" class="field" type="tel" placeholder="Phone number"><input id="suDept" class="field" placeholder="Department"><input id="suYear" class="field" placeholder="Year (e.g. 1st Year)"><input id="suHostel" class="field" placeholder="Hostel / Block"><input id="suPass" class="field" type="password" placeholder="Create password"><input id="suConfirm" class="field" type="password" placeholder="Confirm password"></div><label class="check"><input id="suConsent" type="checkbox"> I agree to share my contact details only when appropriate for an exchange.</label><button class="btn primary authBtn" onclick="signup()">Create student account</button><p class="authHint">Already registered? <button class="linkBtn" onclick="authMode('login')">Sign in</button></p></div><div class="demoNote">Connected to Supabase: accounts, listings, requests and photos are shared across students and devices.</div></div></div>
@@ -822,8 +822,8 @@ function requestRow(r,received=false){
       action='<div class="approvalBox"><b>Approval needed:</b> Review the student, duration and message. Accept only when you are ready to arrange the exchange.</div>'+
         '<div class="approvalActions"><button class="btn primary" onclick="updateRequest(\''+r.id+'\',\'accepted\')">✓ Accept & approve</button><button class="btn soft" onclick="updateRequest(\''+r.id+'\',\'rejected\')">✕ Reject</button></div>';
     }else if(status==='accepted'){
-      action='<div class="actionPanel"><b>Next: complete the handover</b> Contact the student and meet at a safe campus location. After you physically hand over the item, tap the button below.</div>'+
-        '<div class="actionButtons"><button class="btn primary" onclick="confirmHandover(\''+r.id+'\')">🤝 I handed it over</button><button class="btn outline" onclick="contactRequestParticipant(\''+r.id+'\',true)">Contact student</button></div>';
+      action='<div class="actionPanel"><b>Next: complete the handover</b> Contact the student and meet at a safe campus location. After you physically hand over the item, tap <b>Confirm handover</b>.</div>'+
+        '<div class="actionButtons"><button class="btn primary handoverBtn" onclick="confirmHandover(\''+r.id+'\')">✓ Confirm handover</button><button class="btn outline" onclick="contactRequestParticipant(\''+r.id+'\',true)">Contact student</button></div>';
     }else if(status==='active'){
       action='<div class="actionPanel"><b>Exchange is active ✓</b> The item is currently with the borrower. When it is returned, you will confirm that you received it.</div>'+
         '<div class="actionButtons"><button class="btn outline" onclick="contactRequestParticipant(\''+r.id+'\',true)">Contact student</button></div>';
@@ -848,8 +848,8 @@ function requestRow(r,received=false){
 
   let action='';
   if(status==='accepted'){
-    action='<div class="actionPanel"><b>Approved ✓ Next: arrange the exchange</b> Contact the owner, meet on campus, and tap “I received the item” only after you physically receive it.</div>'+
-      '<div class="actionButtons"><button class="btn primary" onclick="confirmHandover(\''+r.id+'\')">✓ I received the item</button><button class="btn outline" onclick="contactRequestParticipant(\''+r.id+'\',false)">Contact owner</button></div>';
+    action='<div class="actionPanel"><b>Approved ✓ Next: arrange the exchange</b> Contact the owner, meet on campus, and tap <b>Confirm receipt</b> only after you physically receive it.</div>'+
+      '<div class="actionButtons"><button class="btn primary" onclick="confirmHandover(\''+r.id+'\')">✓ Confirm receipt</button><button class="btn outline" onclick="contactRequestParticipant(\''+r.id+'\',false)">Contact owner</button></div>';
   }else if(status==='active'){
     action='<div class="actionPanel"><b>Exchange is active ✓</b> Keep the item for the agreed duration. When you return it to the owner, tap “I returned it”.</div>'+
       '<div class="actionButtons"><button class="btn primary" onclick="confirmReturn(\''+r.id+'\')">🔄 I returned the item</button><button class="btn outline" onclick="contactRequestParticipant(\''+r.id+'\',false)">Contact owner</button></div>';
