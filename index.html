@@ -19,7 +19,7 @@ main{max-width:1200px;margin:auto;padding:24px 18px 50px}.view{display:none}.vie
 </style>
 </head>
 <body>
-<div id="authScreen" class="authScreen"><div class="authCard"><div class="authBrand"><span class="logo">↻</span><div><b>Rent & Reuse</b><small>Student sharing platform</small></div></div><div class="authTabs"><button id="loginTab" class="authTab active" onclick="authMode('login')">Sign in</button><button id="signupTab" class="authTab" onclick="authMode('signup')">Create account</button></div><div id="loginForm"><h2>Welcome back 👋</h2><p class="muted">Sign in to borrow, rent and share with students.</p><input id="loginEmail" class="field" type="email" placeholder="College email"><input id="loginPass" class="field" type="password" placeholder="Password" style="margin-top:9px"><button class="btn primary authBtn" onclick="login()">Sign in</button><p class="authHint">New student? <button class="linkBtn" onclick="authMode('signup')">Create an account</button></p></div><div id="signupForm" style="display:none"><h2>Create your student account</h2><p class="muted">Your student profile is stored separately from item listings in this prototype.</p><div class="authGrid"><input id="suName" class="field" placeholder="Full name"><input id="suEmail" class="field" type="email" placeholder="College email"><input id="suPhone" class="field" type="tel" placeholder="Phone number"><input id="suDept" class="field" placeholder="Department"><input id="suYear" class="field" placeholder="Year (e.g. 1st Year)"><input id="suHostel" class="field" placeholder="Hostel / Block"><input id="suPass" class="field" type="password" placeholder="Create password"><input id="suConfirm" class="field" type="password" placeholder="Confirm password"></div><label class="check"><input id="suConsent" type="checkbox"> I agree to share my contact details only when appropriate for an exchange.</label><button class="btn primary authBtn" onclick="signup()">Create student account</button><p class="authHint">Already registered? <button class="linkBtn" onclick="authMode('login')">Sign in</button></p></div><div class="demoNote">Prototype note: this version uses browser storage. For production, use a secure backend database and never store plain passwords in browser storage.</div></div></div>
+<div id="authScreen" class="authScreen"><div class="authCard"><div class="authBrand"><span class="logo">↻</span><div><b>Rent & Reuse</b><small>Student sharing platform</small></div></div><div class="authTabs"><button id="loginTab" class="authTab active" onclick="authMode('login')">Sign in</button><button id="signupTab" class="authTab" onclick="authMode('signup')">Create account</button></div><div id="loginForm"><h2>Welcome back 👋</h2><p class="muted">Sign in to borrow, rent and share with students.</p><input id="loginEmail" class="field" type="email" placeholder="College email"><input id="loginPass" class="field" type="password" placeholder="Password" style="margin-top:9px"><button class="btn primary authBtn" onclick="login()">Sign in</button><p class="authHint">New student? <button class="linkBtn" onclick="authMode('signup')">Create an account</button></p></div><div id="signupForm" style="display:none"><h2>Create your student account</h2><p class="muted">Your student profile is securely connected to your Supabase account.</p><div class="authGrid"><input id="suName" class="field" placeholder="Full name"><input id="suEmail" class="field" type="email" placeholder="College email"><input id="suPhone" class="field" type="tel" placeholder="Phone number"><input id="suDept" class="field" placeholder="Department"><input id="suYear" class="field" placeholder="Year (e.g. 1st Year)"><input id="suHostel" class="field" placeholder="Hostel / Block"><input id="suPass" class="field" type="password" placeholder="Create password"><input id="suConfirm" class="field" type="password" placeholder="Confirm password"></div><label class="check"><input id="suConsent" type="checkbox"> I agree to share my contact details only when appropriate for an exchange.</label><button class="btn primary authBtn" onclick="signup()">Create student account</button><p class="authHint">Already registered? <button class="linkBtn" onclick="authMode('login')">Sign in</button></p></div><div class="demoNote">Connected to Supabase: accounts, listings, requests and photos are shared across students and devices.</div></div></div>
 <header><nav>
 <a class="brand" href="#" onclick="show('home');return false"><span class="logo">↻</span><span>Rent & Reuse<small>Campus sharing platform</small></span></a>
 <div class="nav"><button class="active" data-v="home" onclick="show('home')">Browse</button><button data-v="dashboard" onclick="show('dashboard')">Dashboard</button><button data-v="requests" onclick="show('requests')">Requests</button><button data-v="needs" onclick="show('needs')">Needs</button><button data-v="profile" onclick="show('profile')">Profile</button></div>
@@ -60,11 +60,11 @@ main{max-width:1200px;margin:auto;padding:24px 18px 50px}.view{display:none}.vie
 <div class="panel"><h3>Trust & safety</h3><div class="list"><div class="row"><span>Use clear item photos and condition details</span><span>✓</span></div><div class="row"><span>Meet at a public campus location</span><span>✓</span></div><div class="row"><span>Confirm return after exchange</span><span>✓</span></div><div class="row"><span>Report suspicious listings</span><button class="btn soft" onclick="toast('Report flow ready for backend integration')">Report</button></div></div></div></div>
 </section>
 </main>
-<footer>Rent & Reuse • Campus sharing prototype • Built with HTML, CSS, JavaScript and LocalStorage</footer>
+<footer>Rent & Reuse • Campus sharing platform • HTML, CSS, JavaScript, Supabase</footer>
 
 <div id="contact" class="modalWrap"><div class="modal"><div class="mh"><h3>Contact student</h3><button class="close" onclick="closeModal('contact')">×</button></div><div class="mb"><div id="contactInfo"></div></div></div></div>
 <div id="post" class="modalWrap"><div class="modal"><div class="mh"><h3>Post an item</h3><button class="close" onclick="closeModal('post')">×</button></div><div class="mb"><form class="form" onsubmit="addItem(event)">
-<div class="fg"><label>Item name</label><input id="fName" class="field" required placeholder="e.g. Scientific calculator"></div><div class="fg"><label>Category</label><select id="fCat" class="field"></select></div><div class="fg"><label>Type</label><select id="fMode" class="field"><option>Borrow</option><option>Rent</option></select></div><div class="fg"><label>Price / day (0 = free)</label><input id="fPrice" class="field" type="number" min="0" value="0"></div><div class="fg"><label>Campus location</label><input id="fLoc" class="field" required placeholder="AB-1, Room 204"></div><div class="fg"><label>Condition</label><select id="fCond" class="field"><option>New</option><option>Like New</option><option>Excellent</option><option>Good</option><option>Fair</option><option>Needs Repair</option></select></div><div class="fg full"><label>Item photo</label><div class="photoTools"><label class="btn soft photoBtn">📷 Take photo<input id="fCamera" type="file" accept="image/*" capture="environment" hidden onchange="previewPhoto(this)"></label><label class="btn soft photoBtn">🖼️ Choose gallery<input id="fGallery" type="file" accept="image/*" hidden onchange="previewPhoto(this)"></label></div><img id="fPreview" class="photoPreview" alt="Photo preview" style="display:none"></div><div class="fg"><label>Emoji / icon</label><input id="fEmoji" class="field" placeholder="📚"></div><div class="fg full"><label>Description</label><textarea id="fDesc" class="field" placeholder="Condition, rules, useful details..."></textarea></div><div class="full"><button class="btn primary" type="submit">Publish item</button></div></form></div></div></div>
+<div class="fg"><label>Item name</label><input id="fName" class="field" required placeholder="e.g. Scientific calculator"></div><div class="fg"><label>Category</label><select id="fCat" class="field"></select></div><div class="fg"><label>Type</label><select id="fMode" class="field"><option>Borrow</option><option>Rent</option></select></div><div class="fg"><label>Price / day (0 = free)</label><input id="fPrice" class="field" type="number" min="0" value="0"></div><div class="fg"><label>Campus location</label><input id="fLoc" class="field" required placeholder="AB-1, Room 204"></div><div class="fg"><label>Condition</label><select id="fCond" class="field"><option>New</option><option>Like New</option><option>Good</option><option>Fair</option><option>Used</option></select></div><div class="fg full"><label>Item photo</label><div class="photoTools"><label class="btn soft photoBtn">📷 Take photo<input id="fCamera" type="file" accept="image/*" capture="environment" hidden onchange="previewPhoto(this)"></label><label class="btn soft photoBtn">🖼️ Choose gallery<input id="fGallery" type="file" accept="image/*" hidden onchange="previewPhoto(this)"></label></div><img id="fPreview" class="photoPreview" alt="Photo preview" style="display:none"></div><div class="fg full"><label>Description</label><textarea id="fDesc" class="field" placeholder="Condition, rules, useful details..."></textarea></div><div class="full"><button class="btn primary" type="submit">Publish item</button></div></form></div></div></div>
 
 <div id="request" class="modalWrap"><div class="modal"><div class="mh"><h3>Request item</h3><button class="close" onclick="closeModal('request')">×</button></div><div class="mb"><form onsubmit="sendRequest(event)"><input id="reqId" type="hidden"><div id="reqInfo" class="notice"></div><label style="font-size:12px;font-weight:800">Duration</label><select id="duration" class="field" style="margin:6px 0 12px"><option>1 day</option><option>3 days</option><option>1 week</option><option>1 month</option></select><label style="font-size:12px;font-weight:800">Message to owner</label><textarea id="reqMsg" class="field" style="margin:6px 0 12px;min-height:90px" placeholder="Why do you need it?"></textarea><button class="btn primary">Send request</button></form></div></div></div>
 
@@ -72,53 +72,633 @@ main{max-width:1200px;margin:auto;padding:24px 18px 50px}.view{display:none}.vie
 <div class="fg"><label>What do you need?</label><input id="nName" class="field" required placeholder="e.g. Drafter"></div><div class="fg"><label>Category</label><select id="nCat" class="field"></select></div><div class="fg"><label>How long?</label><input id="nDur" class="field" required placeholder="3 days"></div><div class="fg"><label>Where?</label><input id="nLoc" class="field" required placeholder="Hostel / AB-1"></div><div class="fg full"><label>Details</label><textarea id="nDesc" class="field" placeholder="Add useful information..."></textarea></div><div class="full"><button class="btn primary">Post requirement</button></div></form></div></div></div>
 <div id="toast" class="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const cats=['Academic','Books','Electronics','Sports','Tools','Bags','Clothing','Furniture','Other'];
-const seedStudents=[{id:'s1',name:'Rahul',email:'rahul@campus.edu',phone:'+91 90000 00001',department:'CSE',year:'2nd Year',hostel:'BH-1',password:'demo'},{id:'s2',name:'Ananya',email:'ananya@campus.edu',phone:'+91 90000 00002',department:'ECE',year:'2nd Year',hostel:'BH-2',password:'demo'},{id:'s3',name:'Vikram',email:'vikram@campus.edu',phone:'+91 90000 00003',department:'CSE',year:'1st Year',hostel:'BH-1',password:'demo'},{id:'s4',name:'Kiran',email:'kiran@campus.edu',phone:'+91 90000 00004',department:'ME',year:'2nd Year',hostel:'BH-2',password:'demo'},{id:'s5',name:'Meena',email:'meena@campus.edu',phone:'+91 90000 00005',department:'ECE',year:'3rd Year',hostel:'GH-1',password:'demo'}];
-const seedItems=[
-{id:'1',name:'Engineering Drafter',category:'Academic',mode:'Borrow',price:0,location:'AB-1, Room 204',condition:'Good',emoji:'📐',owner:'Rahul',ownerId:'s1',rating:4.9,verified:true,desc:'A3 drafter, clean and ready for semester use.',created:4},
-{id:'2',name:'Scientific Calculator',category:'Electronics',mode:'Rent',price:20,location:'BH-2 Lobby',condition:'Excellent',emoji:'🧮',owner:'Ananya',ownerId:'s2',rating:5,verified:true,desc:'Casio-style calculator for exams and lab work.',created:3},
-{id:'3',name:'C Programming Book',category:'Books',mode:'Borrow',price:0,location:'Library Gate',condition:'Used',emoji:'📘',owner:'Vikram',ownerId:'s3',rating:4.8,verified:true,desc:'Useful for first-year C fundamentals.',created:2},
-{id:'4',name:'Basketball',category:'Sports',mode:'Borrow',price:0,location:'SAC Court',condition:'Good',emoji:'🏀',owner:'Kiran',ownerId:'s4',rating:4.7,verified:false,desc:'Available after evening practice hours.',created:1},
-{id:'5',name:'USB Keyboard',category:'Electronics',mode:'Rent',price:15,location:'AB-2, Floor 1',condition:'Good',emoji:'⌨️',owner:'Meena',ownerId:'s5',rating:4.6,verified:true,desc:'Spare keyboard for short-term projects.',created:0}
-];
-let state=JSON.parse(localStorage.getItem('rr-v3')||'null')||JSON.parse(localStorage.getItem('rr-v2')||'null')||{items:seedItems,requests:[],needs:[],favorites:[],activity:[],students:seedStudents};
-state.students=state.students||seedStudents;state.requests=state.requests||[];state.items=state.items||seedItems;state.needs=state.needs||[];state.favorites=state.favorites||[];state.activity=state.activity||[];
-let session=JSON.parse(localStorage.getItem('rr-session')||'null');
-function save(){localStorage.setItem('rr-v3',JSON.stringify(state));renderAll()}
-function initials(name){return (name||'CS').split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase()}
-function currentStudent(){return session?state.students.find(s=>s.id===session.id):null}
-function authMode(mode){document.getElementById('loginForm').style.display=mode==='login'?'block':'none';document.getElementById('signupForm').style.display=mode==='signup'?'block':'none';document.getElementById('loginTab').classList.toggle('active',mode==='login');document.getElementById('signupTab').classList.toggle('active',mode==='signup')}
-function login(){const email=document.getElementById('loginEmail').value.trim().toLowerCase(),pass=document.getElementById('loginPass').value;const s=state.students.find(x=>x.email.toLowerCase()===email&&x.password===pass);if(!s)return toast('Invalid email or password');session={id:s.id};localStorage.setItem('rr-session',JSON.stringify(session));bootAuth();toast('Welcome back, '+s.name+'!')}
-function signup(){const name=suName.value.trim(),email=suEmail.value.trim().toLowerCase(),phone=suPhone.value.trim(),dept=suDept.value.trim(),year=suYear.value.trim(),hostel=suHostel.value.trim(),pass=suPass.value,confirm=suConfirm.value;if(!name||!email||!phone||!dept||!year||!pass)return toast('Please complete all student details');if(pass!==confirm)return toast('Passwords do not match');if(!suConsent.checked)return toast('Please accept the contact-sharing note');if(state.students.some(s=>s.email.toLowerCase()===email))return toast('An account with this email already exists');const s={id:'s'+Date.now(),name,email,phone,department:dept,year,hostel,password:pass,rating:5,verified:true};state.students.push(s);session={id:s.id};localStorage.setItem('rr-session',JSON.stringify(session));save();bootAuth();toast('Student account created')}
-function logout(){session=null;localStorage.removeItem('rr-session');document.getElementById('authScreen').style.display='flex';document.getElementById('appMain').style.display='none';authMode('login');toast('Signed out')}
-function bootAuth(){const s=currentStudent();if(!s){document.getElementById('authScreen').style.display='flex';document.getElementById('appMain').style.display='none';return}document.getElementById('authScreen').style.display='none';document.getElementById('appMain').style.display='block';document.getElementById('avatarBtn').textContent=initials(s.name);document.getElementById('profileAvatar').textContent=initials(s.name);document.getElementById('profileName').textContent=s.name;document.getElementById('profileMeta').textContent=s.department+' • '+s.year+' • '+(s.hostel||'Campus');document.getElementById('profileContact').textContent=s.email+' • '+s.phone;document.getElementById('profileRating').textContent='★ '+(s.rating||5).toFixed(1)+' rating';renderAll()}
-function previewPhoto(input){const file=input.files&&input.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{const img=new Image();img.onload=()=>{const max=1000,scale=Math.min(1,max/img.width,max/img.height),canvas=document.createElement('canvas');canvas.width=Math.round(img.width*scale);canvas.height=Math.round(img.height*scale);canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);const data=canvas.toDataURL('image/jpeg',.75);document.getElementById('fPreview').src=data;document.getElementById('fPreview').style.display='block';window.pendingPhoto=data};img.src=reader.result};reader.readAsDataURL(file)}
-function contactOwner(id){const item=state.items.find(x=>x.id===id);if(!item)return;const allowed=item.ownerId===session.id||state.requests.some(r=>r.itemId===id&&r.borrowerId===session.id&&r.status==='Accepted');if(!allowed)return toast('Send a request first. Contact details appear after an accepted exchange.');const s=state.students.find(x=>x.id===item.ownerId)||state.students.find(x=>x.name===item.owner);if(!s)return toast('Student contact is not available');document.getElementById('contactInfo').innerHTML='<div class="contactCard"><div class="avatar" style="width:52px;height:52px">'+initials(s.name)+'</div><div><h3>'+esc(s.name)+'</h3><p class="muted">'+esc(s.department)+' • '+esc(s.year)+' • '+esc(s.hostel||'Campus')+'</p></div></div><div class="contactRows"><div>📧 <b>Email</b><span>'+esc(s.email)+'</span></div><div>📱 <b>Phone</b><span>'+esc(s.phone)+'</span></div></div><div class="notice">Use the contact details only for arranging the approved exchange. Prefer a public campus meeting point.</div>';openModal('contact')}
-function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
-function openModal(id){document.getElementById(id).classList.add('open')}function closeModal(id){document.getElementById(id).classList.remove('open')}
-function show(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.v===id));window.scrollTo({top:0,behavior:'smooth'});renderAll()}
-function fillCats(){document.getElementById('cat').innerHTML='<option value="">All categories</option>'+cats.map(c=>'<option>'+c+'</option>').join('');['fCat','nCat'].forEach(id=>document.getElementById(id).innerHTML=cats.map(c=>'<option>'+c+'</option>').join(''))}
-function renderItems(){
-const q=document.getElementById('search').value.toLowerCase(),c=document.getElementById('cat').value,m=document.getElementById('mode').value,sort=document.getElementById('sort').value;
-let a=state.items.filter(x=>(!q||[x.name,x.category,x.location,x.owner,x.desc].join(' ').toLowerCase().includes(q))&&(!c||x.category===c)&&(!m||x.mode===m));
-if(sort==='low')a.sort((x,y)=>x.price-y.price);if(sort==='high')a.sort((x,y)=>y.price-x.price);if(sort==='rating')a.sort((x,y)=>y.rating-x.rating);if(sort==='new')a.sort((x,y)=>y.created-x.created);
-document.getElementById('items').innerHTML=a.length?a.map(x=>'<article class="card"><div class="pic">'+(x.photo?'<img src="'+x.photo+'" alt="'+esc(x.name)+'">':'<div class="photoEmpty">📷<small>Photo not added</small></div>')+'<button class="heart" onclick="fav(\''+x.id+'\')">'+(state.favorites.includes(x.id)?'♥':'♡')+'</button></div><div class="body"><div class="title"><h3>'+esc(x.name)+'</h3><span class="price">'+(x.price?'₹'+x.price+'/day':'Free')+'</span></div><div class="meta">'+esc(x.location)+' • '+esc(x.category)+'</div><div class="chips"><span class="chip green">'+esc(x.mode)+'</span><span class="chip">'+esc(x.condition)+'</span>'+(x.verified?'<span class="chip">✓ Verified</span>':'')+'</div><p class="meta">'+esc(x.desc)+'</p><div class="meta">Owner <b>'+esc(x.owner)+'</b> • ★ '+x.rating+'</div><div class="cardActions"><button class="btn primary" onclick="requestItem(\''+x.id+'\')">Request</button><button class="btn outline" onclick="contactOwner(\''+x.id+'\')">Contact</button></div></div></article>').join(''):'<div class="empty" style="grid-column:1/-1">No items match your search. Try another filter or post a requirement.</div>'
+const SUPABASE_URL = 'https://nzvychvzlrouipqppsav.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_1nFkxuTfJYRZVwnOOflHMQ_jLXceCev';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+const cats = ['Academic','Books','Electronics','Sports','Tools','Bags','Clothing','Furniture','Other'];
+let currentUser = null;
+let currentProfile = null;
+let items = [];
+let mineItems = [];
+let requests = [];
+let needs = [];
+let favorites = [];
+let activity = [];
+let pendingPhotoFile = null;
+let refreshTimer = null;
+
+function esc(v){
+  return String(v ?? '').replace(/[&<>"']/g, m => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+  }[m]));
 }
-function resetFilters(){search.value='';cat.value='';mode.value='';sort.value='new';renderItems()}
-function fav(id){state.favorites=state.favorites.includes(id)?state.favorites.filter(x=>x!==id):state.favorites.concat(id);save();toast(state.favorites.includes(id)?'Saved to wishlist':'Removed from wishlist')}
-function requestItem(id){const x=state.items.find(i=>i.id===id);document.getElementById('reqId').value=id;document.getElementById('reqInfo').innerHTML='<b>'+esc(x.name)+'</b> • '+x.mode+' • '+(x.price?'₹'+x.price+'/day':'Free')+'<br><span class="muted">Owner: '+esc(x.owner)+' • '+esc(x.location)+'</span>';document.getElementById('reqMsg').value='';openModal('request')}
-function sendRequest(e){e.preventDefault();const x=state.items.find(i=>i.id===document.getElementById('reqId').value);if(state.requests.some(r=>r.itemId===x.id&&r.borrowerId===session.id&&r.status==='Pending'))return toast('You already have a pending request.');state.requests.unshift({id:'r'+Date.now(),itemId:x.id,itemName:x.name,owner:x.owner,ownerId:x.ownerId,borrower:currentStudent().name,borrowerId:session.id,duration:document.getElementById('duration').value,message:document.getElementById('reqMsg').value,status:'Pending',created:Date.now()});state.activity.unshift({text:'Requested '+x.name,icon:'📩',time:Date.now()});closeModal('request');save();toast('Request sent to owner');show('requests')}
-function addItem(e){e.preventDefault();if(!window.pendingPhoto)return toast('Please add an item photo before publishing.');const x={id:'i'+Date.now(),name:fName.value.trim(),category:fCat.value,mode:fMode.value,price:+fPrice.value||0,location:fLoc.value.trim(),condition:fCond.value,emoji:'',owner:currentStudent().name,ownerId:session.id,rating:5,verified:true,desc:fDesc.value.trim(),photo:window.pendingPhoto||'',created:Date.now()};state.items.unshift(x);state.activity.unshift({text:'Posted '+x.name,icon:'📦',time:Date.now()});e.target.reset();window.pendingPhoto='';document.getElementById('fPreview').style.display='none';closeModal('post');save();toast('Item published');show('dashboard')}
-function addNeed(e){e.preventDefault();state.needs.unshift({id:'n'+Date.now(),name:nName.value.trim(),category:nCat.value,duration:nDur.value.trim(),location:nLoc.value.trim(),desc:nDesc.value.trim(),owner:currentStudent().name,ownerId:session.id});state.activity.unshift({text:'Posted a need for '+nName.value,icon:'🔎',time:Date.now()});e.target.reset();closeModal('need');save();toast('Requirement posted');show('needs')}
-function renderNeeds(){document.getElementById('needsGrid').innerHTML=state.needs.length?state.needs.map(n=>'<article class="card"><div class="body"><div class="title"><h3>🔎 '+esc(n.name)+'</h3><span class="chip amber">Need</span></div><div class="meta">'+esc(n.category)+' • '+esc(n.location)+'</div><p>'+esc(n.desc||'Student is looking for this item.')+'</p><div class="chips"><span class="chip">Needed: '+esc(n.duration)+'</span></div><div class="cardActions"><button class="btn primary" onclick="toast(\'Help offer started — connect this to messaging in the production version\')">I can help</button></div></div></article>').join(''):'<div class="empty" style="grid-column:1/-1">No requirements yet. Be the first to post one.</div>'}
-function row(r){return '<div class="row"><div class="rowMain"><div class="icon">'+(r.status==='Accepted'?'✓':r.status==='Rejected'?'×':'↗')+'</div><div><b>'+esc(r.itemName)+'</b><br><small class="muted">'+esc(r.borrower)+' → '+esc(r.owner)+' • '+esc(r.duration)+'</small></div></div><span class="status '+r.status.toLowerCase()+'">'+r.status+'</span></div>'}
-function renderRequests(){const mine=state.requests.filter(r=>r.borrowerId===session.id),rec=state.requests.filter(r=>r.ownerId===session.id);document.getElementById('myReq').innerHTML=mine.length?mine.map(row).join(''):'<div class="empty">You have not requested anything yet.</div>';document.getElementById('received').innerHTML=rec.length?rec.map(r=>'<div class="row"><div class="rowMain"><div class="icon">📩</div><div><b>'+esc(r.itemName)+'</b><br><small class="muted">'+esc(r.borrower)+' • '+esc(r.duration)+'</small></div></div>'+(r.status==='Pending'?'<div style="display:flex;gap:5px"><button class="btn primary" onclick="updateRequest(\''+r.id+'\',\'Accepted\')">Accept</button><button class="btn soft" onclick="updateRequest(\''+r.id+'\',\'Rejected\')">Reject</button></div>':'<span class="status '+r.status.toLowerCase()+'">'+r.status+'</span>')+'</div>').join(''):'<div class="empty">No requests received.</div>'}
-function updateRequest(id,status){const r=state.requests.find(x=>x.id===id);r.status=status;state.activity.unshift({text:status+' request for '+r.itemName,icon:status==='Accepted'?'✅':'❌',time:Date.now()});save();toast('Request '+status.toLowerCase())}
-function renderDash(){const mine=state.items.filter(x=>x.ownerId===session.id),mr=state.requests.filter(r=>r.borrowerId===session.id);document.getElementById('dListed').textContent=mine.length;document.getElementById('dPending').textContent=state.requests.filter(r=>r.ownerId===session.id&&r.status==='Pending').length;document.getElementById('dBorrowed').textContent=mr.filter(r=>r.status==='Accepted').length;document.getElementById('mine').innerHTML=mine.length?mine.map(i=>'<div class="row"><div class="rowMain"><div class="icon">'+esc(i.emoji||'📦')+'</div><div><b>'+esc(i.name)+'</b><br><small class="muted">'+esc(i.location)+' • '+(i.price?'₹'+i.price+'/day':'Free')+'</small></div></div><span class="status accepted">Live</span></div>').join(''):'<div class="empty">You have no listings yet.</div>';document.getElementById('activity').innerHTML=state.activity.length?state.activity.slice(0,7).map(a=>'<div class="row"><div class="rowMain"><div class="icon">'+a.icon+'</div><div><b>'+esc(a.text)+'</b><br><small class="muted">'+new Date(a.time).toLocaleString()+'</small></div></div></div>').join(''):'<div class="empty">Your activity will appear here.</div>'}
-function renderAll(){renderItems();renderNeeds();renderRequests();renderDash();const av=state.items.length,free=state.items.filter(x=>!x.price).length,mr=state.requests.filter(r=>r.borrowerId===session.id).length,ex=state.requests.filter(r=>r.status==='Accepted').length;document.getElementById('sAvail').textContent=av;document.getElementById('sFree').textContent=free;document.getElementById('sReq').textContent=mr;document.getElementById('sSave').textContent=state.favorites.length;document.getElementById('itemCount').textContent=av;document.getElementById('exchangeCount').textContent=ex;const pct=Math.min(95,55+ex*6+Math.min(av,20));document.getElementById('impact').textContent=pct+'%';document.getElementById('bar').style.width=pct+'%'}
-fillCats();bootAuth();
-</script>
+
+function initials(name){
+  return (name || 'CS').split(/\s+/).filter(Boolean).map(x=>x[0]).join('').slice(0,2).toUpperCase();
+}
+
+function statusLabel(s){
+  return String(s || '').charAt(0).toUpperCase() + String(s || '').slice(1);
+}
+
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  clearTimeout(window.toastTimer);
+  window.toastTimer=setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+
+function show(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.v===id));
+  window.scrollTo({top:0,behavior:'smooth'});
+  void renderAll();
+}
+
+function authMode(mode){
+  document.getElementById('loginForm').style.display=mode==='login'?'block':'none';
+  document.getElementById('signupForm').style.display=mode==='signup'?'block':'none';
+  document.getElementById('loginTab').classList.toggle('active',mode==='login');
+  document.getElementById('signupTab').classList.toggle('active',mode==='signup');
+}
+
+function setAppVisible(visible){
+  document.getElementById('authScreen').style.display=visible?'none':'flex';
+  document.getElementById('appMain').style.display=visible?'block':'none';
+}
+
+async function loadProfile(){
+  if(!currentUser){ currentProfile=null; return; }
+  const {data,error}=await supabaseClient
+    .from('students')
+    .select('*')
+    .eq('auth_user_id',currentUser.id)
+    .maybeSingle();
+
+  if(error){
+    console.error(error);
+    toast('Could not load your student profile.');
+    currentProfile=null;
+    return;
+  }
+
+  currentProfile=data;
+}
+
+async function loadData(){
+  if(!currentUser || !currentProfile) return;
+
+  const [
+    listingRes,
+    mineRes,
+    requestRes,
+    needsRes,
+    favoriteRes,
+    activityRes
+  ] = await Promise.all([
+    supabaseClient.from('item_listings').select('*').order('created_at',{ascending:false}),
+    supabaseClient.from('items').select('*').eq('owner_id',currentProfile.id).order('created_at',{ascending:false}),
+    supabaseClient.from('requests').select('*, items(name,photo_url,location)').or(
+      'borrower_id.eq.'+currentProfile.id+',owner_id.eq.'+currentProfile.id
+    ).order('created_at',{ascending:false}),
+    supabaseClient.from('needs').select('*').order('created_at',{ascending:false}),
+    supabaseClient.from('favorites').select('item_id').eq('student_id',currentProfile.id),
+    supabaseClient.from('activity').select('*').eq('student_id',currentProfile.id).order('created_at',{ascending:false}).limit(10)
+  ]);
+
+  const errors=[listingRes,mineRes,requestRes,needsRes,favoriteRes,activityRes].filter(x=>x.error);
+  if(errors.length){
+    console.error('Supabase data load error:',errors.map(x=>x.error));
+    toast('Some data could not be loaded. Check Supabase policies.');
+  }
+
+  items=listingRes.data||[];
+  mineItems=mineRes.data||[];
+  requests=requestRes.data||[];
+  needs=needsRes.data||[];
+  favorites=(favoriteRes.data||[]).map(x=>x.item_id);
+  activity=activityRes.data||[];
+}
+
+function updateProfileUI(){
+  if(!currentProfile) return;
+  document.getElementById('avatarBtn').textContent=initials(currentProfile.name);
+  document.getElementById('profileAvatar').textContent=initials(currentProfile.name);
+  document.getElementById('profileName').textContent=currentProfile.name || 'Student';
+  document.getElementById('profileMeta').textContent=
+    (currentProfile.department || 'Department')+' • '+
+    (currentProfile.year ? currentProfile.year+' Year' : 'Student')+' • '+
+    (currentProfile.hostel || 'Campus');
+  document.getElementById('profileContact').textContent=
+    (currentProfile.email || currentUser.email || '')+' • '+(currentProfile.phone || 'Phone not added');
+  document.getElementById('profileRating').textContent='★ '+Number(currentProfile.rating||0).toFixed(1)+' rating';
+}
+
+async function refreshApp(){
+  if(!currentUser) return;
+  await loadProfile();
+  if(!currentProfile) return;
+  await loadData();
+  updateProfileUI();
+  renderAllSync();
+}
+
+async function login(){
+  const email=document.getElementById('loginEmail').value.trim().toLowerCase();
+  const password=document.getElementById('loginPass').value;
+  if(!email || !password) return toast('Enter your college email and password.');
+
+  const {error}=await supabaseClient.auth.signInWithPassword({email,password});
+  if(error) return toast(error.message);
+  toast('Signed in successfully.');
+}
+
+async function signup(){
+  const name=suName.value.trim();
+  const email=suEmail.value.trim().toLowerCase();
+  const phone=suPhone.value.trim();
+  const department=suDept.value.trim();
+  const yearText=suYear.value.trim();
+  const hostel=suHostel.value.trim();
+  const password=suPass.value;
+  const confirm=suConfirm.value;
+
+  if(!name||!email||!phone||!department||!yearText||!password)
+    return toast('Please complete all student details.');
+  if(password!==confirm) return toast('Passwords do not match.');
+  if(!suConsent.checked) return toast('Please accept the contact-sharing note.');
+  if(password.length<6) return toast('Password must be at least 6 characters.');
+
+  const yearMatch=yearText.match(/\d+/);
+  const year=yearMatch ? Number(yearMatch[0]) : null;
+
+  const {data,error}=await supabaseClient.auth.signUp({
+    email,
+    password,
+    options:{
+      data:{
+        name,
+        phone,
+        department,
+        year,
+        hostel
+      }
+    }
+  });
+
+  if(error) return toast(error.message);
+
+  if(data.session){
+    toast('Account created successfully.');
+  }else{
+    toast('Account created. Check your email to confirm, then sign in.');
+    authMode('login');
+  }
+}
+
+async function logout(){
+  await supabaseClient.auth.signOut();
+}
+
+function bootSignedOut(){
+  currentUser=null;
+  currentProfile=null;
+  items=[]; mineItems=[]; requests=[]; needs=[]; favorites=[]; activity=[];
+  setAppVisible(false);
+  authMode('login');
+  if(refreshTimer){clearInterval(refreshTimer);refreshTimer=null;}
+}
+
+async function bootSignedIn(user){
+  currentUser=user;
+  setAppVisible(true);
+  await refreshApp();
+
+  if(refreshTimer) clearInterval(refreshTimer);
+  refreshTimer=setInterval(async()=>{
+    if(currentUser) await refreshApp();
+  },10000);
+}
+
+function previewPhoto(input){
+  const file=input.files && input.files[0];
+  if(!file) return;
+  if(!file.type.startsWith('image/')) return toast('Please choose an image.');
+  if(file.size>5*1024*1024) return toast('Photo must be 5 MB or smaller.');
+
+  pendingPhotoFile=file;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    const img=new Image();
+    img.onload=()=>{
+      const max=1000;
+      const scale=Math.min(1,max/img.width,max/img.height);
+      const canvas=document.createElement('canvas');
+      canvas.width=Math.max(1,Math.round(img.width*scale));
+      canvas.height=Math.max(1,Math.round(img.height*scale));
+      canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+      document.getElementById('fPreview').src=canvas.toDataURL('image/jpeg',.78);
+      document.getElementById('fPreview').style.display='block';
+    };
+    img.src=reader.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function uploadItemPhoto(file){
+  if(!file || !currentUser) return null;
+  const safe=file.name.toLowerCase().replace(/[^a-z0-9._-]/g,'-');
+  const path=currentUser.id+'/'+Date.now()+'-'+safe;
+
+  const {error}=await supabaseClient.storage
+    .from('rent-reuse-images')
+    .upload(path,file,{
+      cacheControl:'3600',
+      upsert:false,
+      contentType:file.type
+    });
+
+  if(error) throw error;
+
+  const {data}=supabaseClient.storage
+    .from('rent-reuse-images')
+    .getPublicUrl(path);
+
+  return data.publicUrl;
+}
+
+async function addItem(e){
+  e.preventDefault();
+
+  if(!currentProfile) return toast('Please sign in again.');
+  if(!pendingPhotoFile) return toast('Please add an item photo before publishing.');
+
+  const button=e.target.querySelector('button[type="submit"]');
+  button.disabled=true;
+  button.textContent='Publishing...';
+
+  try{
+    const photoUrl=await uploadItemPhoto(pendingPhotoFile);
+
+    const {error}=await supabaseClient.from('items').insert({
+      owner_id:currentProfile.id,
+      name:fName.value.trim(),
+      category:fCat.value,
+      photo_url:photoUrl,
+      condition:fCond.value,
+      mode:fMode.value,
+      price:Number(fPrice.value)||0,
+      location:fLoc.value.trim(),
+      description:fDesc.value.trim(),
+      available:true
+    });
+
+    if(error) throw error;
+
+    await addActivity('Posted '+fName.value.trim(),'📦');
+
+    e.target.reset();
+    pendingPhotoFile=null;
+    document.getElementById('fPreview').style.display='none';
+    closeModal('post');
+    await refreshApp();
+    show('dashboard');
+    toast('Item published for all students.');
+  }catch(error){
+    console.error(error);
+    toast(error.message || 'Could not publish item.');
+  }finally{
+    button.disabled=false;
+    button.textContent='Publish item';
+  }
+}
+
+async function addActivity(message,icon='•'){
+  if(!currentProfile) return;
+  const {error}=await supabaseClient.from('activity').insert({
+    student_id:currentProfile.id,
+    activity_type:'general',
+    message:icon+' '+message
+  });
+  if(error) console.error('Activity error:',error);
+}
+
+function requestItem(id){
+  const x=items.find(i=>i.id===id);
+  if(!x) return;
+  if(x.owner_id===currentProfile.id) return toast('You cannot request your own item.');
+
+  const already=requests.some(r=>r.item_id===id && r.borrower_id===currentProfile.id && r.status==='pending');
+  if(already) return toast('You already have a pending request for this item.');
+
+  document.getElementById('reqId').value=id;
+  document.getElementById('reqInfo').innerHTML=
+    '<b>'+esc(x.name)+'</b> • '+esc(x.mode)+' • '+(x.price?'₹'+x.price+'/day':'Free')+
+    '<br><span class="muted">Owner: '+esc(x.owner_name)+' • '+esc(x.location)+'</span>';
+  document.getElementById('reqMsg').value='';
+  openModal('request');
+}
+
+async function sendRequest(e){
+  e.preventDefault();
+
+  const itemId=document.getElementById('reqId').value;
+  const x=items.find(i=>i.id===itemId);
+  if(!x) return toast('Item no longer exists.');
+
+  const {error}=await supabaseClient.from('requests').insert({
+    item_id:x.id,
+    borrower_id:currentProfile.id,
+    owner_id:x.owner_id,
+    duration:document.getElementById('duration').value,
+    message:document.getElementById('reqMsg').value.trim(),
+    status:'pending'
+  });
+
+  if(error){
+    console.error(error);
+    return toast(error.message);
+  }
+
+  await addActivity('Requested '+x.name,'📩');
+  closeModal('request');
+  await refreshApp();
+  show('requests');
+  toast('Request sent to '+x.owner_name+'.');
+}
+
+async function updateRequest(id,status){
+  const {error}=await supabaseClient
+    .from('requests')
+    .update({status})
+    .eq('id',id)
+    .eq('owner_id',currentProfile.id);
+
+  if(error){
+    console.error(error);
+    return toast(error.message);
+  }
+
+  const r=requests.find(x=>x.id===id);
+  await addActivity(statusLabel(status)+' request for '+(r?.items?.name || 'item'),status==='accepted'?'✅':'❌');
+  await refreshApp();
+  toast('Request '+status+'.');
+}
+
+async function fav(id){
+  const exists=favorites.includes(id);
+
+  if(exists){
+    const {error}=await supabaseClient.from('favorites')
+      .delete()
+      .eq('student_id',currentProfile.id)
+      .eq('item_id',id);
+    if(error) return toast(error.message);
+    favorites=favorites.filter(x=>x!==id);
+    toast('Removed from wishlist.');
+  }else{
+    const {error}=await supabaseClient.from('favorites').insert({
+      student_id:currentProfile.id,
+      item_id:id
+    });
+    if(error) return toast(error.message);
+    favorites.push(id);
+    toast('Saved to wishlist.');
+  }
+
+  renderItems();
+  updateStats();
+}
+
+async function addNeed(e){
+  e.preventDefault();
+
+  const {error}=await supabaseClient.from('needs').insert({
+    student_id:currentProfile.id,
+    title:nName.value.trim(),
+    category:nCat.value,
+    description:(nDesc.value.trim() || 'Student is looking for this item.')+' • Needed: '+nDur.value.trim()+' • Location: '+nLoc.value.trim()
+  });
+
+  if(error) return toast(error.message);
+
+  await addActivity('Posted a need for '+nName.value.trim(),'🔎');
+  e.target.reset();
+  closeModal('need');
+  await refreshApp();
+  show('needs');
+  toast('Requirement posted.');
+}
+
+async function contactOwner(itemId){
+  const x=items.find(i=>i.id===itemId);
+  if(!x) return;
+
+  if(x.owner_id===currentProfile.id){
+    const {data,error}=await supabaseClient.from('students')
+      .select('*').eq('id',currentProfile.id).single();
+    if(error) return toast(error.message);
+    return showContact(data);
+  }
+
+  const accepted=requests.some(r=>
+    r.item_id===itemId &&
+    r.borrower_id===currentProfile.id &&
+    r.status==='accepted'
+  );
+
+  if(!accepted) return toast('Contact details appear after an accepted exchange.');
+
+  const {data,error}=await supabaseClient.from('students')
+    .select('*').eq('id',x.owner_id).single();
+
+  if(error) return toast('Contact details are not available.');
+  showContact(data);
+}
+
+function showContact(s){
+  document.getElementById('contactInfo').innerHTML=
+    '<div class="contactCard"><div class="avatar" style="width:52px;height:52px">'+initials(s.name)+'</div>'+
+    '<div><h3>'+esc(s.name)+'</h3><p class="muted">'+esc(s.department||'Student')+' • '+(s.year?s.year+' Year':'')+' • '+esc(s.hostel||'Campus')+'</p></div></div>'+
+    '<div class="contactRows">'+
+    '<div>📧 <b>Email</b><span>'+esc(s.email||'Not available')+'</span></div>'+
+    '<div>📱 <b>Phone</b><span>'+esc(s.phone||'Not available')+'</span></div>'+
+    '</div><div class="notice">Use these details only for arranging the approved exchange. Prefer a public campus meeting point.</div>';
+  openModal('contact');
+}
+
+function renderItems(){
+  const q=(document.getElementById('search').value||'').toLowerCase();
+  const c=document.getElementById('cat').value;
+  const m=document.getElementById('mode').value;
+  const sort=document.getElementById('sort').value;
+
+  let a=items.filter(x=>
+    (!q || [x.name,x.category,x.location,x.owner_name,x.description].join(' ').toLowerCase().includes(q)) &&
+    (!c || x.category===c) &&
+    (!m || x.mode===m)
+  );
+
+  if(sort==='low') a.sort((x,y)=>(x.price||0)-(y.price||0));
+  if(sort==='high') a.sort((x,y)=>(y.price||0)-(x.price||0));
+  if(sort==='rating') a.sort((x,y)=>(y.owner_rating||0)-(x.owner_rating||0));
+  if(sort==='new') a.sort((x,y)=>new Date(y.created_at)-new Date(x.created_at));
+
+  document.getElementById('items').innerHTML=a.length ? a.map(x=>
+    '<article class="card">'+
+      '<div class="pic">'+
+        (x.photo_url
+          ? '<img src="'+esc(x.photo_url)+'" alt="'+esc(x.name)+'">'
+          : '<div class="photoEmpty">📷<small>Photo not added</small></div>')+
+        '<button class="heart" onclick="fav(\''+x.id+'\')">'+(favorites.includes(x.id)?'♥':'♡')+'</button>'+
+      '</div>'+
+      '<div class="body">'+
+        '<div class="title"><h3>'+esc(x.name)+'</h3><span class="price">'+(x.price?'₹'+x.price+'/day':'Free')+'</span></div>'+
+        '<div class="meta">'+esc(x.location)+' • '+esc(x.category)+'</div>'+
+        '<div class="chips"><span class="chip green">'+esc(x.mode)+'</span><span class="chip">'+esc(x.condition)+'</span>'+(x.owner_rating?'<span class="chip">★ '+Number(x.owner_rating).toFixed(1)+'</span>':'')+'</div>'+
+        '<p class="meta">'+esc(x.description||'No description added.')+'</p>'+
+        '<div class="meta">Owner <b>'+esc(x.owner_name)+'</b> • '+esc(x.owner_department||'Student')+'</div>'+
+        '<div class="cardActions"><button class="btn primary" onclick="requestItem(\''+x.id+'\')">Request</button><button class="btn outline" onclick="contactOwner(\''+x.id+'\')">Contact</button></div>'+
+      '</div>'+
+    '</article>'
+  ).join('') :
+  '<div class="empty" style="grid-column:1/-1">No items match your search. Try another filter or post a requirement.</div>';
+}
+
+function resetFilters(){
+  search.value=''; cat.value=''; mode.value=''; sort.value='new'; renderItems();
+}
+
+function renderNeeds(){
+  document.getElementById('needsGrid').innerHTML=needs.length ? needs.map(n=>
+    '<article class="card"><div class="body">'+
+      '<div class="title"><h3>🔎 '+esc(n.title)+'</h3><span class="chip amber">Need</span></div>'+
+      '<div class="meta">'+esc(n.category)+' • '+esc(n.student_id===currentProfile.id?'You':'Campus student')+'</div>'+
+      '<p>'+esc(n.description||'Student is looking for this item.')+'</p>'+
+      '<div class="cardActions"><button class="btn soft" onclick="toast(\'Connect through the item owner after you arrange an exchange.\')">I can help</button></div>'+
+    '</div></article>'
+  ).join('') :
+  '<div class="empty" style="grid-column:1/-1">No requirements yet. Be the first to post one.</div>';
+}
+
+function requestRow(r,received=false){
+  const item=r.items||{};
+  const status=statusLabel(r.status);
+  const other=received ? 'From student' : 'To owner';
+  return '<div class="row">'+
+    '<div class="rowMain"><div class="icon">'+(status==='Accepted'?'✓':status==='Rejected'?'×':'↗')+'</div>'+
+    '<div><b>'+esc(item.name||'Item request')+'</b><br><small class="muted">'+other+' • '+esc(r.duration||'')+'</small></div></div>'+
+    (received && status==='Pending'
+      ? '<div style="display:flex;gap:5px"><button class="btn primary" onclick="updateRequest(\''+r.id+'\',\'accepted\')">Accept</button><button class="btn soft" onclick="updateRequest(\''+r.id+'\',\'rejected\')">Reject</button></div>'
+      : '<span class="status '+status.toLowerCase()+'">'+status+'</span>')+
+  '</div>';
+}
+
+function renderRequests(){
+  const mine=requests.filter(r=>r.borrower_id===currentProfile.id);
+  const received=requests.filter(r=>r.owner_id===currentProfile.id);
+
+  document.getElementById('myReq').innerHTML=mine.length
+    ? mine.map(r=>requestRow(r,false)).join('')
+    : '<div class="empty">You have not requested anything yet.</div>';
+
+  document.getElementById('received').innerHTML=received.length
+    ? received.map(r=>requestRow(r,true)).join('')
+    : '<div class="empty">No requests received.</div>';
+}
+
+function renderDash(){
+  const pending=requests.filter(r=>r.owner_id===currentProfile.id&&r.status==='pending').length;
+  const accepted=requests.filter(r=>r.borrower_id===currentProfile.id&&r.status==='accepted').length;
+
+  document.getElementById('dListed').textContent=mineItems.length;
+  document.getElementById('dPending').textContent=pending;
+  document.getElementById('dBorrowed').textContent=accepted;
+
+  document.getElementById('mine').innerHTML=mineItems.length
+    ? mineItems.map(i=>
+      '<div class="row"><div class="rowMain">'+
+      '<div class="icon" style="overflow:hidden">'+(i.photo_url?'<img class="miniPhoto" src="'+esc(i.photo_url)+'" alt="">':'📦')+'</div>'+
+      '<div><b>'+esc(i.name)+'</b><br><small class="muted">'+esc(i.location)+' • '+(i.price?'₹'+i.price+'/day':'Free')+'</small></div>'+
+      '</div><span class="status '+(i.available?'accepted':'returned')+'">'+(i.available?'Live':'Unavailable')+'</span></div>'
+    ).join('')
+    : '<div class="empty">You have no listings yet.</div>';
+
+  document.getElementById('activity').innerHTML=activity.length
+    ? activity.map(a=>
+      '<div class="row"><div class="rowMain"><div class="icon">'+esc((a.message||'•').slice(0,2))+'</div>'+
+      '<div><b>'+esc((a.message||'').replace(/^[^\w]+/,'').slice(0,80))+'</b><br><small class="muted">'+new Date(a.created_at).toLocaleString()+'</small></div></div></div>'
+    ).join('')
+    : '<div class="empty">Your activity will appear here.</div>';
+}
+
+function updateStats(){
+  const available=items.length;
+  const free=items.filter(x=>!x.price).length;
+  const myReq=requests.filter(r=>r.borrower_id===currentProfile.id).length;
+  const exchanges=requests.filter(r=>r.status==='accepted').length;
+
+  document.getElementById('sAvail').textContent=available;
+  document.getElementById('sFree').textContent=free;
+  document.getElementById('sReq').textContent=myReq;
+  document.getElementById('sSave').textContent=favorites.length;
+  document.getElementById('itemCount').textContent=available;
+  document.getElementById('exchangeCount').textContent=exchanges;
+
+  const pct=Math.min(95,55+exchanges*6+Math.min(available,20));
+  document.getElementById('impact').textContent=pct+'%';
+  document.getElementById('bar').style.width=pct+'%';
+}
+
+function renderAllSync(){
+  if(!currentProfile) return;
+  renderItems();
+  renderNeeds();
+  renderRequests();
+  renderDash();
+  updateStats();
+}
+
+async function renderAll(){
+  if(!currentProfile) return;
+  await loadData();
+  renderAllSync();
+}
+
+function fillCats(){
+  document.getElementById('cat').innerHTML='<option value="">All categories</option>'+cats.map(c=>'<option>'+c+'</option>').join('');
+  ['fCat','nCat'].forEach(id=>{
+    document.getElementById(id).innerHTML=cats.map(c=>'<option>'+c+'</option>').join('');
+  });
+}
+
+supabaseClient.auth.onAuthStateChange((event,session)=>{
+  if(session?.user){
+    setTimeout(()=>bootSignedIn(session.user),0);
+  }else{
+    setTimeout(()=>bootSignedOut(),0);
+  }
+});
+
+async function start(){
+  fillCats();
+  const {data,error}=await supabaseClient.auth.getSession();
+  if(error){
+    console.error(error);
+    return toast('Could not initialize Supabase authentication.');
+  }
+  if(data.session) await bootSignedIn(data.session.user);
+  else bootSignedOut();
+}
+
+start();
+</script></script>
 </body>
 </html>
