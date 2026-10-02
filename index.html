@@ -646,9 +646,12 @@ async function confirmReturn(id){
   );
   await refreshApp();
   const updated=requests.find(x=>x.id===id);
-  toast(updated?.status==='completed'
-    ? 'Return confirmed. Item is available again.'
-    : 'Return marked. Waiting for the owner to confirm receipt.');
+  if(updated?.status==='completed'){
+    show('home');
+    toast('Return confirmed. Item is available again in Browse.');
+  }else{
+    toast('Return marked. Waiting for the owner to confirm receipt.');
+  }
 }
 
 async function contactRequestParticipant(id,received){
