@@ -1071,7 +1071,20 @@ async function fav(id){
   updateStats();
 }
 
-async function addNeed(e){
+async async function setItemReplacementCost(id){
+  const item=mineItems.find(x=>x.id===id);
+  if(!item) return toast('Item not found.');
+  const raw=prompt('Enter the product replacement value in ₹ for '+item.name, String(item.replacement_cost||''));
+  if(raw===null) return;
+  const value=Number(raw);
+  if(!Number.isFinite(value) || value<=0) return toast('Enter a valid value greater than ₹0.');
+  const {error}=await supabaseClient.from('items').update({replacement_cost:value}).eq('id',id).eq('owner_id',currentProfile.id);
+  if(error){ console.error(error); return toast(error.message||'Could not update product value.'); }
+  await refreshApp();
+  toast('Replacement value updated to ₹'+value.toLocaleString('en-IN')+'.');
+}
+
+function addNeed(e){
   e.preventDefault();
 
   const {error}=await supabaseClient.from('needs').insert({
@@ -1320,8 +1333,8 @@ function renderDash(){
     ? mineItems.map(i=>
       '<div class="row"><div class="rowMain">'+
       '<div class="icon" style="overflow:hidden">'+(i.photo_url?'<img class="miniPhoto" src="'+esc(i.photo_url)+'" alt="">':'📦')+'</div>'+
-      '<div><b>'+esc(i.name)+'</b><br><small class="muted">'+esc(i.location)+' • '+(i.price?'₹'+i.price+'/day':'Free')+'</small></div>'+
-      '</div><span class="status '+(i.available?'accepted':'returned')+'">'+(i.available?'Live':'Unavailable')+'</span></div>'
+      '<div><b>'+esc(i.name)+'</b><br><small class="muted">'+esc(i.location)+' • '+(i.price?'₹'+i.price+'/day':'Free')+' • Value ₹'+Number(i.replacement_cost||0).toLocaleString('en-IN')+'</small></div>'+
+      '</div><div class="actionButtons" style="margin-top:0;max-width:250px"><span class="status '+(i.available?'accepted':'returned')+'">'+(i.available?'Live':'Unavailable')+'</span><button class="btn soft" onclick="setItemReplacementCost(\''+i.id+'\')">Set value</button></div></div>'
     ).join('')
     : '<div class="empty">You have no listings yet.</div>';
 
