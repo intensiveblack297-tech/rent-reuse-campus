@@ -101,7 +101,7 @@ main{max-width:1200px;margin:auto;padding:24px 18px 50px}.view{display:none}.vie
   nav>.btn.primary{font-size:11px;padding:8px}
   .hero h1{font-size:30px}
 }
-.handoverBtn{font-weight:900;min-height:44px}.actionButtons .outline{min-height:44px}.compensation_due{background:#fff0df;color:#a65b00}.payment_submitted{background:#eef3ff;color:#304a9d}.compensation_paid{background:#e5f6ef;color:var(--green)}.liabilityBox{margin-top:12px;padding:12px;border-radius:12px;background:#fff7ea;border:1px solid #f1d7a6;color:#6e4a12;font-size:12px;line-height:1.5}.dangerBtn{background:#fff0f0;color:#b12f2f;border:1px solid #f1c2c2}</style>
+.handoverBtn{font-weight:900;min-height:44px}.actionButtons .outline{min-height:44px}.ratingStars{display:flex;gap:6px;margin:8px 0 12px}.ratingStar{border:1px solid #d7def0;background:#fff;border-radius:10px;font-size:22px;padding:7px 10px;cursor:pointer}.ratingStar.selected{background:#fff3c4;border-color:#e2b84b}.ratingReview{min-height:90px}.compensation_due{background:#fff0df;color:#a65b00}.payment_submitted{background:#eef3ff;color:#304a9d}.compensation_paid{background:#e5f6ef;color:var(--green)}.liabilityBox{margin-top:12px;padding:12px;border-radius:12px;background:#fff7ea;border:1px solid #f1d7a6;color:#6e4a12;font-size:12px;line-height:1.5}.dangerBtn{background:#fff0f0;color:#b12f2f;border:1px solid #f1c2c2}</style>
 <style id="mobile-responsive-v2">
 /* Responsive redesign: phone-first layout */
 @media (max-width: 620px){
@@ -296,6 +296,7 @@ main{max-width:1200px;margin:auto;padding:24px 18px 50px}.view{display:none}.vie
 
 <div id="request" class="modalWrap"><div class="modal"><div class="mh"><h3>Request item</h3><button class="close" onclick="closeModal('request')">×</button></div><div class="mb"><form onsubmit="sendRequest(event)"><input id="reqId" type="hidden"><div id="reqInfo" class="notice"></div><label style="font-size:12px;font-weight:800">Duration</label><select id="duration" class="field" style="margin:6px 0 12px"><option>1 day</option><option>3 days</option><option>1 week</option><option>1 month</option></select><label style="font-size:12px;font-weight:800">Message to owner</label><textarea id="reqMsg" class="field" style="margin:6px 0 12px;min-height:90px" placeholder="Why do you need it?"></textarea><div class="liabilityBox">🛡️ <b>Borrower responsibility:</b> If the item is lost, not returned, or misused/damaged, the listed replacement value may become payable to the owner.</div><button class="btn primary" style="margin-top:12px">Send request</button></form></div></div></div>
 <div id="compensation" class="modalWrap"><div class="modal"><div class="mh"><h3>Report compensation issue</h3><button class="close" onclick="closeModal('compensation')">×</button></div><div class="mb"><div id="compensationInfo" class="notice"></div><label style="font-size:12px;font-weight:800">Reason</label><textarea id="compensationReason" class="field" style="margin:6px 0 12px;min-height:100px" placeholder="Example: Item was not returned / item was damaged / item was misused..."></textarea><div class="liabilityBox">The borrower will be shown the replacement cost and must submit a payment reference. The item will remain unavailable until the owner confirms compensation.</div><button class="btn primary" style="margin-top:12px" onclick="submitCompensationClaim()">Create compensation claim</button></div></div></div>
+<div id="rating" class="modalWrap"><div class="modal"><div class="mh"><h3>Rate this exchange</h3><button class="close" onclick="closeModal('rating')">×</button></div><div class="mb"><div id="ratingInfo" class="notice"></div><label style="font-size:12px;font-weight:800">Your rating</label><div id="ratingStars" class="ratingStars"><button type="button" class="ratingStar" onclick="chooseRating(1)">★</button><button type="button" class="ratingStar" onclick="chooseRating(2)">★</button><button type="button" class="ratingStar" onclick="chooseRating(3)">★</button><button type="button" class="ratingStar" onclick="chooseRating(4)">★</button><button type="button" class="ratingStar" onclick="chooseRating(5)">★</button></div><label style="font-size:12px;font-weight:800">Feedback (optional)</label><textarea id="ratingReview" class="field ratingReview" style="margin:6px 0 12px" maxlength="500" placeholder="How was your experience?"></textarea><button class="btn primary" style="width:100%" onclick="submitRating()">Submit rating</button></div></div></div>
 <div id="payment" class="modalWrap"><div class="modal"><div class="mh"><h3>Submit compensation payment</h3><button class="close" onclick="closeModal('payment')">×</button></div><div class="mb"><div id="paymentInfo" class="notice"></div><label style="font-size:12px;font-weight:800">Payment reference / note</label><textarea id="paymentNote" class="field" style="margin:6px 0 12px;min-height:90px" placeholder="Example: UPI transaction ID, cash paid, or other agreed payment reference"></textarea><div class="liabilityBox">This records that you have paid. The owner still has to confirm receipt. Actual payment is made through the payment method agreed between the students.</div><button class="btn primary" style="margin-top:12px" onclick="submitCompensationPayment()">✓ I paid the compensation</button></div></div></div>
 
 <div id="need" class="modalWrap"><div class="modal"><div class="mh"><h3>Post a requirement</h3><button class="close" onclick="closeModal('need')">×</button></div><div class="mb"><form class="form" onsubmit="addNeed(event)">
@@ -323,6 +324,8 @@ let requestStudents = {};
 let realtimeChannel=null;
 let notificationCount=0;
 let isAdmin=false;
+let exchangeRatings={};
+let selectedRating=0;
 let adminStudents=[];
 
 function esc(v){
@@ -405,7 +408,7 @@ async function loadProfile(){
 async function loadData(){
   if(!currentUser || !currentProfile) return;
 
-  const [listingRes,mineRes,requestRes,needsRes,favoriteRes,activityRes,valueRes]=await Promise.all([
+  const [listingRes,mineRes,requestRes,needsRes,favoriteRes,activityRes,valueRes,ratingRes]=await Promise.all([
     supabaseClient.from('item_listings').select('*').order('created_at',{ascending:false}),
     supabaseClient.from('items').select('*').eq('owner_id',currentProfile.id).order('created_at',{ascending:false}),
     supabaseClient.from('requests').select('*, items(name,photo_url,location,mode,price,available,replacement_cost)').or(
@@ -414,10 +417,11 @@ async function loadData(){
     supabaseClient.from('needs').select('*').order('created_at',{ascending:false}),
     supabaseClient.from('favorites').select('item_id').eq('student_id',currentProfile.id),
     supabaseClient.from('activity').select('*').eq('student_id',currentProfile.id).order('created_at',{ascending:false}).limit(10),
-    supabaseClient.rpc('get_available_item_values')
+    supabaseClient.rpc('get_available_item_values'),
+    supabaseClient.rpc('get_my_exchange_ratings')
   ]);
 
-  const errors=[listingRes,mineRes,requestRes,needsRes,favoriteRes,activityRes,valueRes].filter(x=>x.error);
+  const errors=[listingRes,mineRes,requestRes,needsRes,favoriteRes,activityRes,valueRes,ratingRes].filter(x=>x.error);
   if(errors.length){
     console.error('Supabase data load error:',errors.map(x=>x.error));
     toast('Some data could not be loaded. Check Supabase policies.');
@@ -433,6 +437,8 @@ async function loadData(){
   needs=needsRes.data||[];
   favorites=(favoriteRes.data||[]).map(x=>x.item_id);
   activity=activityRes.data||[];
+  exchangeRatings={};
+  (ratingRes.data||[]).forEach(x=>{ exchangeRatings[x.request_id+':'+x.rated_student_id]=x; });
 
   requestStudents={};
   const ids=[...new Set(requests.flatMap(r=>[r.borrower_id,r.owner_id]).filter(Boolean))];
@@ -1233,8 +1239,12 @@ function requestRow(r,received=false){
         '<div class="actionButtons"><button class="btn primary" onclick="confirmCompensationPayment(\''+r.id+'\')">✓ Confirm payment received</button><button class="btn outline" onclick="contactRequestParticipant(\''+r.id+'\',true)">Contact student</button></div>';
     }else if(status==='compensation_paid'){
       action='<div class="actionPanel"><b>Compensation paid ✓</b> The owner confirmed receipt of ₹'+Number(r.compensation_amount||0).toLocaleString('en-IN')+'.</div>';
+    }else if(status==='compensation_paid'){
+      action='<div class="actionPanel"><b>Compensation paid ✓</b> The owner confirmed receipt of ₹'+Number(r.compensation_amount||0).toLocaleString('en-IN')+'.</div>'+
+        ratingAction(r,received);
     }else if(status==='completed'){
-      action='<div class="actionPanel"><b>Exchange completed ✓</b> The item is available again for the campus community.</div>';
+      action='<div class="actionPanel"><b>Exchange completed ✓</b> The item is available again for the campus community.</div>'+
+        ratingAction(r,received);
     }
     return '<div class="requestCard '+(status==='pending'?'pending':'')+'">'+
       '<div class="requestTop"><div>'+
@@ -1266,9 +1276,11 @@ function requestRow(r,received=false){
     action='<div class="liabilityBox"><b>Payment submitted: ₹'+Number(r.compensation_amount||0).toLocaleString('en-IN')+'</b><br>The owner is reviewing the payment reference.</div>'+
       '<div class="actionButtons"><button class="btn outline" onclick="contactRequestParticipant(\''+r.id+'\',false)">Contact owner</button></div>';
   }else if(status==='compensation_paid'){
-    action='<div class="actionPanel"><b>Compensation paid ✓</b> The owner confirmed receipt of ₹'+Number(r.compensation_amount||0).toLocaleString('en-IN')+'.</div>';
+    action='<div class="actionPanel"><b>Compensation paid ✓</b> The owner confirmed receipt of ₹'+Number(r.compensation_amount||0).toLocaleString('en-IN')+'.</div>'+
+      ratingAction(r,received);
   }else if(status==='completed'){
-    action='<div class="actionPanel"><b>Completed ✓</b> The item has been returned and is available again.</div>';
+    action='<div class="actionPanel"><b>Completed ✓</b> The item has been returned and is available again.</div>'+
+      ratingAction(r,received);
   }else if(status==='rejected'){
     action='<div class="requestHint">The owner did not approve this request.</div>';
   }else if(status==='pending'){
@@ -1284,6 +1296,58 @@ function requestRow(r,received=false){
     (['accepted','active','return_pending','completed'].includes(status)?lifecycleSteps(status):'')+
     action+
     '</div>';
+}
+
+function ratingKey(r,received){
+  const ratedStudentId=received ? r.borrower_id : r.owner_id;
+  return r.id+':'+ratedStudentId;
+}
+
+function ratingAction(r,received){
+  if(!['completed','compensation_paid'].includes(r.status)) return '';
+  const key=ratingKey(r,received);
+  const saved=exchangeRatings[key];
+  const target=received ? 'the borrower' : 'the owner';
+  if(saved){
+    return '<div class="actionPanel"><b>⭐ You rated '+target+': '+Number(saved.rating).toFixed(0)+'/5</b>'+(saved.review?'<br><span class="muted">“'+esc(saved.review)+'”</span>':'')+'</div>';
+  }
+  return '<div class="actionPanel"><b>Exchange finished.</b> Please rate '+target+' to help build trust on campus.</div><div class="actionButtons"><button class="btn primary" onclick="openRatingModal(\''+r.id+'\')">⭐ Rate '+target+'</button></div>';
+}
+
+function openRatingModal(id){
+  const r=requests.find(x=>x.id===id);
+  if(!r || !['completed','compensation_paid'].includes(r.status)) return toast('Rating is available after the exchange is finished.');
+  const received=r.owner_id===currentProfile.id;
+  const ratedId=received ? r.borrower_id : r.owner_id;
+  const key=r.id+':'+ratedId;
+  if(exchangeRatings[key]) return toast('You have already rated this exchange.');
+  selectedRating=0;
+  document.getElementById('ratingInfo').innerHTML='<b>'+esc(r.items?.name||'Item')+'</b><br>Rate your experience with <b>'+esc((requestStudents[ratedId]||{}).name||'the other student')+'</b>.';
+  document.getElementById('ratingReview').value='';
+  updateRatingStars();
+  document.getElementById('rating').dataset.requestId=id;
+  openModal('rating');
+}
+
+function chooseRating(value){
+  selectedRating=value;
+  updateRatingStars();
+}
+
+function updateRatingStars(){
+  document.querySelectorAll('#ratingStars .ratingStar').forEach((b,i)=>b.classList.toggle('selected',i<selectedRating));
+}
+
+async function submitRating(){
+  const id=document.getElementById('rating').dataset.requestId;
+  if(!selectedRating) return toast('Please select a rating from 1 to 5 stars.');
+  const review=document.getElementById('ratingReview').value.trim();
+  const {error}=await supabaseClient.rpc('submit_exchange_rating',{p_request_id:id,p_rating:selectedRating,p_review:review||null});
+  if(error){console.error(error);return toast(error.message||'Could not submit rating.');}
+  closeModal('rating');
+  await addActivity('Submitted a '+selectedRating+' star exchange rating','⭐');
+  await refreshApp();
+  toast('Rating submitted. The student’s profile rating has been updated.');
 }
 
 function renderRequests(){
