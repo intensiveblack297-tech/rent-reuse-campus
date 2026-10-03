@@ -101,7 +101,7 @@ main{max-width:1200px;margin:auto;padding:24px 18px 50px}.view{display:none}.vie
   nav>.btn.primary{font-size:11px;padding:8px}
   .hero h1{font-size:30px}
 }
-.handoverBtn{font-weight:900;min-height:44px}.actionButtons .outline{min-height:44px}</style>
+.handoverBtn{font-weight:900;min-height:44px}.actionButtons .outline{min-height:44px}.compensation_due{background:#fff0df;color:#a65b00}.payment_submitted{background:#eef3ff;color:#304a9d}.compensation_paid{background:#e5f6ef;color:var(--green)}.liabilityBox{margin-top:12px;padding:12px;border-radius:12px;background:#fff7ea;border:1px solid #f1d7a6;color:#6e4a12;font-size:12px;line-height:1.5}.dangerBtn{background:#fff0f0;color:#b12f2f;border:1px solid #f1c2c2}</style>
 <style id="mobile-responsive-v2">
 /* Responsive redesign: phone-first layout */
 @media (max-width: 620px){
@@ -292,9 +292,11 @@ main{max-width:1200px;margin:auto;padding:24px 18px 50px}.view{display:none}.vie
 
 <div id="contact" class="modalWrap"><div class="modal"><div class="mh"><h3>Contact student</h3><button class="close" onclick="closeModal('contact')">×</button></div><div class="mb"><div id="contactInfo"></div></div></div></div>
 <div id="post" class="modalWrap"><div class="modal"><div class="mh"><h3>Post an item</h3><button class="close" onclick="closeModal('post')">×</button></div><div class="mb"><form class="form" onsubmit="addItem(event)">
-<div class="fg"><label>Item name</label><input id="fName" class="field" required placeholder="e.g. Scientific calculator"></div><div class="fg"><label>Category</label><select id="fCat" class="field"></select></div><div class="fg"><label>Type</label><select id="fMode" class="field"><option>Borrow</option><option>Rent</option></select></div><div class="fg"><label>Price / day (0 = free)</label><input id="fPrice" class="field" type="number" min="0" value="0"></div><div class="fg"><label>Campus location</label><input id="fLoc" class="field" required placeholder="AB-1, Room 204"></div><div class="fg"><label>Condition</label><select id="fCond" class="field"><option>New</option><option>Like New</option><option>Good</option><option>Fair</option><option>Used</option></select></div><div class="fg full"><label>Item photo</label><div class="photoTools"><label class="btn soft photoBtn">📷 Take photo<input id="fCamera" type="file" accept="image/*" capture="environment" hidden onchange="previewPhoto(this)"></label><label class="btn soft photoBtn">🖼️ Choose gallery<input id="fGallery" type="file" accept="image/*" hidden onchange="previewPhoto(this)"></label></div><img id="fPreview" class="photoPreview" alt="Photo preview" style="display:none"></div><div class="fg full"><label>Description</label><textarea id="fDesc" class="field" placeholder="Condition, rules, useful details..."></textarea></div><div class="full"><button class="btn primary" type="submit">Publish item</button></div></form></div></div></div>
+<div class="fg"><label>Item name</label><input id="fName" class="field" required placeholder="e.g. Scientific calculator"></div><div class="fg"><label>Category</label><select id="fCat" class="field"></select></div><div class="fg"><label>Type</label><select id="fMode" class="field"><option>Borrow</option><option>Rent</option></select></div><div class="fg"><label>Price / day (0 = free)</label><input id="fPrice" class="field" type="number" min="0" value="0"></div><div class="fg"><label>Product replacement value (₹)</label><input id="fReplacementCost" class="field" type="number" min="1" step="1" required placeholder="e.g. 2500"><small class="muted">If the item is lost, not returned, or misused/damaged, this is the compensation amount the borrower is responsible for.</small></div><div class="fg"><label>Campus location</label><input id="fLoc" class="field" required placeholder="AB-1, Room 204"></div><div class="fg"><label>Condition</label><select id="fCond" class="field"><option>New</option><option>Like New</option><option>Good</option><option>Fair</option><option>Used</option></select></div><div class="fg full"><label>Item photo</label><div class="photoTools"><label class="btn soft photoBtn">📷 Take photo<input id="fCamera" type="file" accept="image/*" capture="environment" hidden onchange="previewPhoto(this)"></label><label class="btn soft photoBtn">🖼️ Choose gallery<input id="fGallery" type="file" accept="image/*" hidden onchange="previewPhoto(this)"></label></div><img id="fPreview" class="photoPreview" alt="Photo preview" style="display:none"></div><div class="fg full"><label>Description</label><textarea id="fDesc" class="field" placeholder="Condition, rules, useful details..."></textarea></div><div class="full"><button class="btn primary" type="submit">Publish item</button></div></form></div></div></div>
 
-<div id="request" class="modalWrap"><div class="modal"><div class="mh"><h3>Request item</h3><button class="close" onclick="closeModal('request')">×</button></div><div class="mb"><form onsubmit="sendRequest(event)"><input id="reqId" type="hidden"><div id="reqInfo" class="notice"></div><label style="font-size:12px;font-weight:800">Duration</label><select id="duration" class="field" style="margin:6px 0 12px"><option>1 day</option><option>3 days</option><option>1 week</option><option>1 month</option></select><label style="font-size:12px;font-weight:800">Message to owner</label><textarea id="reqMsg" class="field" style="margin:6px 0 12px;min-height:90px" placeholder="Why do you need it?"></textarea><button class="btn primary">Send request</button></form></div></div></div>
+<div id="request" class="modalWrap"><div class="modal"><div class="mh"><h3>Request item</h3><button class="close" onclick="closeModal('request')">×</button></div><div class="mb"><form onsubmit="sendRequest(event)"><input id="reqId" type="hidden"><div id="reqInfo" class="notice"></div><label style="font-size:12px;font-weight:800">Duration</label><select id="duration" class="field" style="margin:6px 0 12px"><option>1 day</option><option>3 days</option><option>1 week</option><option>1 month</option></select><label style="font-size:12px;font-weight:800">Message to owner</label><textarea id="reqMsg" class="field" style="margin:6px 0 12px;min-height:90px" placeholder="Why do you need it?"></textarea><div class="liabilityBox">🛡️ <b>Borrower responsibility:</b> If the item is lost, not returned, or misused/damaged, the listed replacement value may become payable to the owner.</div><button class="btn primary" style="margin-top:12px">Send request</button></form></div></div></div>
+<div id="compensation" class="modalWrap"><div class="modal"><div class="mh"><h3>Report compensation issue</h3><button class="close" onclick="closeModal('compensation')">×</button></div><div class="mb"><div id="compensationInfo" class="notice"></div><label style="font-size:12px;font-weight:800">Reason</label><textarea id="compensationReason" class="field" style="margin:6px 0 12px;min-height:100px" placeholder="Example: Item was not returned / item was damaged / item was misused..."></textarea><div class="liabilityBox">The borrower will be shown the replacement cost and must submit a payment reference. The item will remain unavailable until the owner confirms compensation.</div><button class="btn primary" style="margin-top:12px" onclick="submitCompensationClaim()">Create compensation claim</button></div></div></div>
+<div id="payment" class="modalWrap"><div class="modal"><div class="mh"><h3>Submit compensation payment</h3><button class="close" onclick="closeModal('payment')">×</button></div><div class="mb"><div id="paymentInfo" class="notice"></div><label style="font-size:12px;font-weight:800">Payment reference / note</label><textarea id="paymentNote" class="field" style="margin:6px 0 12px;min-height:90px" placeholder="Example: UPI transaction ID, cash paid, or other agreed payment reference"></textarea><div class="liabilityBox">This records that you have paid. The owner still has to confirm receipt. Actual payment is made through the payment method agreed between the students.</div><button class="btn primary" style="margin-top:12px" onclick="submitCompensationPayment()">✓ I paid the compensation</button></div></div></div>
 
 <div id="need" class="modalWrap"><div class="modal"><div class="mh"><h3>Post a requirement</h3><button class="close" onclick="closeModal('need')">×</button></div><div class="mb"><form class="form" onsubmit="addNeed(event)">
 <div class="fg"><label>What do you need?</label><input id="nName" class="field" required placeholder="e.g. Drafter"></div><div class="fg"><label>Category</label><select id="nCat" class="field"></select></div><div class="fg"><label>How long?</label><input id="nDur" class="field" required placeholder="3 days"></div><div class="fg"><label>Where?</label><input id="nLoc" class="field" required placeholder="Hostel / AB-1"></div><div class="fg full"><label>Details</label><textarea id="nDesc" class="field" placeholder="Add useful information..."></textarea></div><div class="full"><button class="btn primary">Post requirement</button></div></form></div></div></div>
@@ -334,7 +336,7 @@ function initials(name){
 }
 
 function statusLabel(s){
-  const labels={pending:'Pending',accepted:'Approved',active:'Active',return_pending:'Return pending',completed:'Completed',rejected:'Rejected',cancelled:'Cancelled'};
+  const labels={pending:'Pending',accepted:'Approved',active:'Active',return_pending:'Return pending',completed:'Completed',rejected:'Rejected',cancelled:'Cancelled',compensation_due:'Compensation due',payment_submitted:'Payment submitted',compensation_paid:'Compensation paid'};
   return labels[s] || (String(s || '').charAt(0).toUpperCase() + String(s || '').slice(1));
 }
 
@@ -403,18 +405,19 @@ async function loadProfile(){
 async function loadData(){
   if(!currentUser || !currentProfile) return;
 
-  const [listingRes,mineRes,requestRes,needsRes,favoriteRes,activityRes]=await Promise.all([
+  const [listingRes,mineRes,requestRes,needsRes,favoriteRes,activityRes,valueRes]=await Promise.all([
     supabaseClient.from('item_listings').select('*').order('created_at',{ascending:false}),
     supabaseClient.from('items').select('*').eq('owner_id',currentProfile.id).order('created_at',{ascending:false}),
-    supabaseClient.from('requests').select('*, items(name,photo_url,location,mode,price,available)').or(
+    supabaseClient.from('requests').select('*, items(name,photo_url,location,mode,price,available,replacement_cost)').or(
       'borrower_id.eq.'+currentProfile.id+',owner_id.eq.'+currentProfile.id
     ).order('created_at',{ascending:false}),
     supabaseClient.from('needs').select('*').order('created_at',{ascending:false}),
     supabaseClient.from('favorites').select('item_id').eq('student_id',currentProfile.id),
-    supabaseClient.from('activity').select('*').eq('student_id',currentProfile.id).order('created_at',{ascending:false}).limit(10)
+    supabaseClient.from('activity').select('*').eq('student_id',currentProfile.id).order('created_at',{ascending:false}).limit(10),
+    supabaseClient.from('items').select('id,replacement_cost').eq('available',true)
   ]);
 
-  const errors=[listingRes,mineRes,requestRes,needsRes,favoriteRes,activityRes].filter(x=>x.error);
+  const errors=[listingRes,mineRes,requestRes,needsRes,favoriteRes,activityRes,valueRes].filter(x=>x.error);
   if(errors.length){
     console.error('Supabase data load error:',errors.map(x=>x.error));
     toast('Some data could not be loaded. Check Supabase policies.');
@@ -422,6 +425,10 @@ async function loadData(){
 
   items=listingRes.data||[];
   mineItems=mineRes.data||[];
+  const valueMap={};
+  (valueRes.data||[]).forEach(i=>valueMap[i.id]=i.replacement_cost);
+  mineItems.forEach(i=>{ if(i.replacement_cost!=null) valueMap[i.id]=i.replacement_cost; });
+  items=items.map(i=>({...i,replacement_cost:valueMap[i.id]??0}));
   requests=requestRes.data||[];
   needs=needsRes.data||[];
   favorites=(favoriteRes.data||[]).map(x=>x.item_id);
@@ -791,6 +798,7 @@ async function addItem(e){
       condition:fCond.value,
       mode:fMode.value,
       price:Number(fPrice.value)||0,
+      replacement_cost:Number(document.getElementById('fReplacementCost').value)||0,
       location:fLoc.value.trim(),
       description:fDesc.value.trim(),
       available:true
@@ -838,7 +846,8 @@ function requestItem(id){
   document.getElementById('reqId').value=id;
   document.getElementById('reqInfo').innerHTML=
     '<b>'+esc(x.name)+'</b> • '+esc(x.mode)+' • '+(x.price?'₹'+x.price+'/day':'Free')+
-    '<br><span class="muted">Owner: '+esc(x.owner_name)+' • '+esc(x.location)+'</span>';
+    '<br><span class="muted">Owner: '+esc(x.owner_name)+' • '+esc(x.location)+'</span>'+
+    '<br><b>Replacement value: ₹'+Number(x.replacement_cost||0).toLocaleString('en-IN')+'</b>';
   document.getElementById('reqMsg').value='';
   openModal('request');
 }
@@ -863,8 +872,8 @@ async function subscribeToRealtime(){
       if(r.borrower_id===currentProfile?.id){
         notificationCount++;
         const b=document.getElementById('notifyBadge'); if(b){b.textContent=notificationCount;b.style.display='inline-flex'}
-        const n=document.getElementById('liveNotice'); if(n){n.style.display='block';n.innerHTML=r.status==='accepted'?'✅ <b>Request approved!</b> The owner accepted your request.':r.status==='active'?'🤝 <b>Exchange active!</b> Both students confirmed the handover.':r.status==='return_pending'?'🔄 <b>Return marked!</b> The owner needs to confirm the item was received back.':r.status==='completed'?'✅ <b>Exchange completed!</b> The item is available again.':'❌ <b>Request update:</b> The owner rejected your request.'}
-        toast(r.status==='accepted'?'✅ Your request was approved!':r.status==='active'?'🤝 Both students confirmed the handover.':r.status==='return_pending'?'🔄 Return marked. Waiting for owner confirmation.':r.status==='completed'?'✅ Exchange completed. Item available again.':'❌ Your request was rejected.');
+        const n=document.getElementById('liveNotice'); if(n){n.style.display='block';n.innerHTML=r.status==='accepted'?'✅ <b>Request approved!</b> The owner accepted your request.':r.status==='active'?'🤝 <b>Exchange active!</b> Both students confirmed the handover.':r.status==='return_pending'?'🔄 <b>Return marked!</b> The owner needs to confirm the item was received back.':r.status==='completed'?'✅ <b>Exchange completed!</b> The item is available again.':r.status==='compensation_due'?'⚠️ <b>Compensation required!</b> The owner reported an item issue.':r.status==='payment_submitted'?'💳 <b>Compensation payment submitted.</b> Waiting for owner confirmation.':r.status==='compensation_paid'?'💰 <b>Compensation paid.</b> The owner confirmed receipt.':'❌ <b>Request update:</b> The owner rejected your request.'}
+        toast(r.status==='accepted'?'✅ Your request was approved!':r.status==='active'?'🤝 Both students confirmed the handover.':r.status==='return_pending'?'🔄 Return marked. Waiting for owner confirmation.':r.status==='completed'?'✅ Exchange completed. Item available again.':r.status==='compensation_due'?'⚠️ Compensation is due for this exchange.':r.status==='payment_submitted'?'💳 Compensation payment submitted.':r.status==='compensation_paid'?'💰 Compensation payment confirmed.':'❌ Your request was rejected.');
         refreshApp();
       }
     })
@@ -973,6 +982,57 @@ async function confirmReturn(id){
   }else{
     toast('Return marked. Waiting for the owner to confirm receipt.');
   }
+}
+
+function openCompensationClaim(id){
+  const r=requests.find(x=>x.id===id);
+  if(!r || r.owner_id!==currentProfile.id) return toast('Only the item owner can report compensation.');
+  document.getElementById('compensationInfo').innerHTML=
+    '<b>'+esc(r.items?.name||'Item')+'</b><br>Replacement value: <b>₹'+Number(r.items?.replacement_cost||r.compensation_amount||0).toLocaleString('en-IN')+'</b><br><span class="muted">Use this when the item was not returned, lost, damaged or misused.</span>';
+  document.getElementById('compensationReason').value='';
+  document.getElementById('compensation').dataset.requestId=id;
+  openModal('compensation');
+}
+
+async function submitCompensationClaim(){
+  const id=document.getElementById('compensation').dataset.requestId;
+  const reason=document.getElementById('compensationReason').value.trim();
+  if(!reason) return toast('Please enter the reason.');
+  const {error}=await supabaseClient.rpc('claim_compensation',{p_request_id:id,p_reason:reason});
+  if(error){ console.error(error); return toast(error.message||'Could not create compensation claim.'); }
+  closeModal('compensation');
+  await addActivity('Reported a compensation issue','⚠️');
+  await refreshApp();
+  toast('Compensation claim created. The borrower must pay the replacement value.');
+}
+
+function openPaymentModal(id){
+  const r=requests.find(x=>x.id===id);
+  if(!r || r.borrower_id!==currentProfile.id) return toast('Only the borrower can submit this payment.');
+  document.getElementById('paymentInfo').innerHTML='<b>Amount due: ₹'+Number(r.compensation_amount||0).toLocaleString('en-IN')+'</b><br>Reason: '+esc(r.compensation_reason||'Compensation claim');
+  document.getElementById('paymentNote').value='';
+  document.getElementById('payment').dataset.requestId=id;
+  openModal('payment');
+}
+
+async function submitCompensationPayment(){
+  const id=document.getElementById('payment').dataset.requestId;
+  const note=document.getElementById('paymentNote').value.trim();
+  if(!note) return toast('Please enter a payment reference or note.');
+  const {error}=await supabaseClient.rpc('submit_compensation_payment',{p_request_id:id,p_payment_note:note});
+  if(error){ console.error(error); return toast(error.message||'Could not submit payment.'); }
+  closeModal('payment');
+  await addActivity('Submitted compensation payment','💳');
+  await refreshApp();
+  toast('Payment submitted. Waiting for the owner to confirm receipt.');
+}
+
+async function confirmCompensationPayment(id){
+  const {error}=await supabaseClient.rpc('confirm_compensation_payment',{p_request_id:id});
+  if(error){ console.error(error); return toast(error.message||'Could not confirm compensation.'); }
+  await addActivity('Confirmed compensation payment','💰');
+  await refreshApp();
+  toast('Compensation payment confirmed.');
 }
 
 async function contactRequestParticipant(id,received){
@@ -1097,6 +1157,7 @@ function renderItems(){
         '<div class="title"><h3>'+esc(x.name)+'</h3><span class="price">'+(x.price?'₹'+x.price+'/day':'Free')+'</span></div>'+
         '<div class="meta">'+esc(x.location)+' • '+esc(x.category)+'</div>'+
         '<div class="chips"><span class="chip green">'+esc(x.mode)+'</span><span class="chip">'+esc(x.condition)+'</span>'+(x.owner_rating?'<span class="chip">★ '+Number(x.owner_rating).toFixed(1)+'</span>':'')+'</div>'+
+        '<div class="meta"><b>Replacement value:</b> ₹'+Number(x.replacement_cost||0).toLocaleString('en-IN')+'</div>'+
         '<p class="meta">'+esc(x.description||'No description added.')+'</p>'+
         '<div class="meta">Owner <b>'+esc(x.owner_name)+'</b> • '+esc(x.owner_department||'Student')+'</div>'+
         '<div class="cardActions">'+
@@ -1150,10 +1211,15 @@ function requestRow(r,received=false){
         '<div class="actionButtons"><button class="btn primary handoverBtn" onclick="confirmHandover(\''+r.id+'\')">✓ Confirm handover</button><button class="btn outline" onclick="contactRequestParticipant(\''+r.id+'\',true)">Contact student</button></div>';
     }else if(status==='active'){
       action='<div class="actionPanel"><b>Exchange is active ✓</b> The item is currently with the borrower. When it is returned, you will confirm that you received it.</div>'+
-        '<div class="actionButtons"><button class="btn outline" onclick="contactRequestParticipant(\''+r.id+'\',true)">Contact student</button></div>';
+        '<div class="actionButtons"><button class="btn dangerBtn" onclick="openCompensationClaim(\''+r.id+'\')">⚠ Report not returned / damaged</button><button class="btn outline" onclick="contactRequestParticipant(\''+r.id+'\',true)">Contact student</button></div>';
     }else if(status==='return_pending'){
       action='<div class="actionPanel"><b>Return waiting for your confirmation</b> The borrower marked the item as returned. Check the item, then confirm receipt to complete the exchange.</div>'+
-        '<div class="actionButtons"><button class="btn primary" onclick="confirmReturn(\''+r.id+'\')">✓ Confirm item returned</button><button class="btn outline" onclick="contactRequestParticipant(\''+r.id+'\',true)">Contact student</button></div>';
+        '<div class="actionButtons"><button class="btn primary" onclick="confirmReturn(\''+r.id+'\')">✓ Confirm item returned</button><button class="btn dangerBtn" onclick="openCompensationClaim(\''+r.id+'\')">⚠ Item not returned / damaged</button><button class="btn outline" onclick="contactRequestParticipant(\''+r.id+'\',true)">Contact student</button></div>';
+    }else if(status==='payment_submitted'){
+      action='<div class="liabilityBox"><b>Payment submitted: ₹'+Number(r.compensation_amount||0).toLocaleString('en-IN')+'</b><br>Payment reference: '+esc(r.compensation_payment_note||'Not provided')+'</div>'+
+        '<div class="actionButtons"><button class="btn primary" onclick="confirmCompensationPayment(\''+r.id+'\')">✓ Confirm payment received</button><button class="btn outline" onclick="contactRequestParticipant(\''+r.id+'\',true)">Contact student</button></div>';
+    }else if(status==='compensation_paid'){
+      action='<div class="actionPanel"><b>Compensation paid ✓</b> The owner confirmed receipt of ₹'+Number(r.compensation_amount||0).toLocaleString('en-IN')+'.</div>';
     }else if(status==='completed'){
       action='<div class="actionPanel"><b>Exchange completed ✓</b> The item is available again for the campus community.</div>';
     }
@@ -1180,6 +1246,14 @@ function requestRow(r,received=false){
   }else if(status==='return_pending'){
     action='<div class="actionPanel"><b>Return marked ✓</b> The owner needs to confirm that the item was received back.</div>'+
       '<div class="actionButtons"><button class="btn outline" onclick="contactRequestParticipant(\''+r.id+'\',false)">Contact owner</button></div>';
+  }else if(status==='compensation_due'){
+    action='<div class="liabilityBox"><b>⚠ Compensation due: ₹'+Number(r.compensation_amount||0).toLocaleString('en-IN')+'</b><br>Reason: '+esc(r.compensation_reason||'Product was not returned or was damaged/misused.')+'</div>'+
+      '<div class="actionButtons"><button class="btn primary" onclick="openPaymentModal(\''+r.id+'\')">💳 Submit payment</button><button class="btn outline" onclick="contactRequestParticipant(\''+r.id+'\',false)">Contact owner</button></div>';
+  }else if(status==='payment_submitted'){
+    action='<div class="liabilityBox"><b>Payment submitted: ₹'+Number(r.compensation_amount||0).toLocaleString('en-IN')+'</b><br>The owner is reviewing the payment reference.</div>'+
+      '<div class="actionButtons"><button class="btn outline" onclick="contactRequestParticipant(\''+r.id+'\',false)">Contact owner</button></div>';
+  }else if(status==='compensation_paid'){
+    action='<div class="actionPanel"><b>Compensation paid ✓</b> The owner confirmed receipt of ₹'+Number(r.compensation_amount||0).toLocaleString('en-IN')+'.</div>';
   }else if(status==='completed'){
     action='<div class="actionPanel"><b>Completed ✓</b> The item has been returned and is available again.</div>';
   }else if(status==='rejected'){
