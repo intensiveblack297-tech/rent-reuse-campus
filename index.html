@@ -1071,7 +1071,7 @@ async function fav(id){
   updateStats();
 }
 
-async async function setItemReplacementCost(id){
+async function setItemReplacementCost(id){
   const item=mineItems.find(x=>x.id===id);
   if(!item) return toast('Item not found.');
   const raw=prompt('Enter the product replacement value in ₹ for '+item.name, String(item.replacement_cost||''));
