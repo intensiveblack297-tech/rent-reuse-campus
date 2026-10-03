@@ -208,12 +208,30 @@ main{max-width:1200px;margin:auto;padding:24px 18px 50px}.view{display:none}.vie
 }
 </style>
 
+<style id="admin-page-styles">
+.adminTableWrap{overflow:auto;border:1px solid var(--line);border-radius:15px;background:#fff}
+.adminTable{width:100%;border-collapse:collapse;min-width:760px}
+.adminTable th,.adminTable td{padding:12px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:middle}
+.adminTable th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:#f7f9fc;position:sticky;top:0}
+.adminTable td{font-size:13px}
+.adminTable tr:last-child td{border-bottom:0}
+.adminTable .studentName{font-weight:850}
+.adminTable .studentSub{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.adminToolbar{display:grid;grid-template-columns:1fr auto auto;gap:9px;align-items:center;margin-bottom:13px}
+.adminCount{padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--muted);font-size:12px;white-space:nowrap}
+.adminPrivacy{margin-bottom:14px}
+@media(max-width:620px){
+  .adminToolbar{grid-template-columns:1fr;gap:7px}
+  .adminCount{white-space:normal}
+  .adminTableWrap{border-radius:13px}
+}
+</style>
 </head>
 <body>
 <div id="authScreen" class="authScreen"><div class="authCard"><div class="authBrand"><span class="logo">↻</span><div><b>Rent & Reuse</b><small>Student sharing platform</small></div></div><div class="authTabs"><button id="loginTab" class="authTab active" onclick="authMode('login')">Sign in</button><button id="signupTab" class="authTab" onclick="authMode('signup')">Create account</button></div><div id="loginForm"><h2>Welcome back 👋</h2><p class="muted">Sign in to borrow, rent and share with students.</p><input id="loginEmail" class="field" type="email" placeholder="College email"><input id="loginPass" class="field" type="password" placeholder="Password" style="margin-top:9px"><button class="btn primary authBtn" onclick="login()">Sign in</button><p class="authHint">New student? <button class="linkBtn" onclick="authMode('signup')">Create an account</button></p></div><div id="signupForm" style="display:none"><h2>Create your student account</h2><p class="muted">Your student profile is securely connected to your Supabase account.</p><div class="authGrid"><input id="suName" class="field" placeholder="Full name"><input id="suEmail" class="field" type="email" placeholder="College email"><input id="suPhone" class="field" type="tel" placeholder="Phone number"><input id="suDept" class="field" placeholder="Department"><input id="suYear" class="field" placeholder="Year (e.g. 1st Year)"><input id="suHostel" class="field" placeholder="Hostel / Block"><input id="suPass" class="field" type="password" placeholder="Create password"><input id="suConfirm" class="field" type="password" placeholder="Confirm password"></div><label class="check"><input id="suConsent" type="checkbox"> I agree to share my contact details only when appropriate for an exchange.</label><button id="createAccountBtn" type="button" class="btn primary authBtn" onclick="signup()">Create student account</button><div id="signupStatus" style="display:none;margin-top:10px;padding:10px 12px;border-radius:10px;background:#eef3ff;color:#304a9d;font-size:12px;line-height:1.45;"></div><p class="authHint">Already registered? <button class="linkBtn" onclick="authMode('login')">Sign in</button></p></div><div class="demoNote">Connected to Supabase: accounts, listings, requests and photos are shared across students and devices.</div></div></div>
 <header><nav>
 <a class="brand" href="#" onclick="show('home');return false"><span class="logo">↻</span><span>Rent & Reuse<small>Campus sharing platform</small></span></a>
-<div class="nav"><button class="active" data-v="home" onclick="show('home')">Browse</button><button data-v="dashboard" onclick="show('dashboard')">Dashboard</button><button class="navReq" data-v="requests" onclick="show('requests')">Requests<span id="requestsBadge" class="navBadge">0</span><span id="notifyBadge" class="navBadge notifyBadge">0</span></button><button data-v="needs" onclick="show('needs')">Needs</button><button data-v="profile" onclick="show('profile')">Profile</button></div>
+<div class="nav"><button class="active" data-v="home" onclick="show('home')">Browse</button><button data-v="dashboard" onclick="show('dashboard')">Dashboard</button><button class="navReq" data-v="requests" onclick="show('requests')">Requests<span id="requestsBadge" class="navBadge">0</span><span id="notifyBadge" class="navBadge notifyBadge">0</span></button><button data-v="needs" onclick="show('needs')">Needs</button><button data-v="profile" onclick="show('profile')">Profile</button><button id="adminNav" data-v="admin" onclick="openAdminPage()" style="display:none">Admin</button></div>
 <button class="btn primary" onclick="openModal('post')">+ Post item</button><button class="avatar" id="avatarBtn" onclick="show('profile')" title="Open profile">CS</button>
 </nav></header>
 <div class="mobileNav" aria-label="Mobile navigation">
@@ -222,6 +240,7 @@ main{max-width:1200px;margin:auto;padding:24px 18px 50px}.view{display:none}.vie
   <button data-v="requests" onclick="show('requests')"><span class="mobileNavIcon">♢<i id="mobileReqBadge" class="mobileBadge">0</i></span><small>Requests</small></button>
   <button data-v="needs" onclick="show('needs')"><span>⌕</span><small>Needs</small></button>
   <button data-v="profile" onclick="show('profile')"><span>●</span><small>Profile</small></button>
+  <button id="adminMobileNav" data-v="admin" onclick="openAdminPage()" style="display:none"><span>⚙</span><small>Admin</small></button>
 </div>
 <main id="appMain">
 <section id="home" class="view active">
@@ -257,6 +276,17 @@ main{max-width:1200px;margin:auto;padding:24px 18px 50px}.view{display:none}.vie
 <div class="two"><div class="panel"><div style="display:flex;gap:14px;align-items:center"><div class="avatar" id="profileAvatar" style="width:60px;height:60px">CS</div><div><h2 id="profileName" style="margin:0">Campus Student</h2><p class="muted" id="profileMeta">CSE • 1st Year • IIIT RK Valley</p><p class="muted" id="profileContact"></p></div></div><hr style="border:0;border-top:1px solid var(--line);margin:18px 0"><div class="chips"><span class="chip green">✓ Verified student</span><span class="chip" id="profileRating">★ 5.0 rating</span><span class="chip">Community member</span></div><div class="actions"><button class="btn soft" onclick="logout()">Sign out</button></div></div>
 <div class="panel"><h3>Trust & safety</h3><div class="list"><div class="row"><span>Use clear item photos and condition details</span><span>✓</span></div><div class="row"><span>Meet at a public campus location</span><span>✓</span></div><div class="row"><span>Confirm return after exchange</span><span>✓</span></div><div class="row"><span>Report suspicious listings</span><button class="btn soft" onclick="toast('Report flow ready for backend integration')">Report</button></div></div></div></div>
 </section>
+<section id="admin" class="view">
+<div class="head"><div><h2>Registered students</h2><p>Admin-only directory of students registered on Rent & Reuse.</p></div><button class="btn outline" onclick="loadAdminStudents()">↻ Refresh</button></div>
+<div class="notice adminPrivacy">🔒 <b>Private admin area.</b> Email addresses and mobile numbers are visible only to accounts granted the Supabase <b>admin</b> role. Do not share this information outside its intended campus purpose.</div>
+<div class="adminToolbar">
+  <input id="adminStudentSearch" class="field" placeholder="Search name, email, mobile, department or hostel..." oninput="renderAdminStudents()">
+  <div id="adminStudentCount" class="adminCount">0 students</div>
+  <button class="btn soft" onclick="document.getElementById('adminStudentSearch').value='';renderAdminStudents()">Clear</button>
+</div>
+<div id="adminStudentsTable"></div>
+</section>
+
 </main>
 <footer>Rent & Reuse • Campus sharing platform • HTML, CSS, JavaScript, Supabase</footer>
 
@@ -290,6 +320,8 @@ let refreshTimer = null;
 let requestStudents = {};
 let realtimeChannel=null;
 let notificationCount=0;
+let isAdmin=false;
+let adminStudents=[];
 
 function esc(v){
   return String(v ?? '').replace(/[&<>"']/g, m => ({
@@ -326,6 +358,7 @@ function openModal(id){ document.getElementById(id).classList.add('open'); }
 function closeModal(id){ document.getElementById(id).classList.remove('open'); }
 
 function show(id){
+  if(id==='admin') return openAdminPage();
   if(id==='requests'){
     notificationCount=0;
     const nb=document.getElementById('notifyBadge'); if(nb) nb.style.display='none';
@@ -563,10 +596,113 @@ async function logout(){
   await supabaseClient.auth.signOut();
 }
 
+
+function updateAdminNav(){
+  ['adminNav','adminMobileNav'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display=isAdmin?'inline-flex':'none';
+  });
+}
+
+async function loadAdminAccess(){
+  isAdmin=false;
+  updateAdminNav();
+  if(!currentUser) return;
+
+  const {data,error}=await supabaseClient.rpc('is_current_user_admin');
+  if(error){
+    console.warn('Admin access check unavailable:',error.message);
+    return;
+  }
+
+  isAdmin=data===true;
+  updateAdminNav();
+}
+
+async function openAdminPage(){
+  if(!currentUser) return toast('Please sign in first.');
+
+  const {data,error}=await supabaseClient.rpc('is_current_user_admin');
+  if(error){
+    console.error('Admin access check error:',error);
+    return toast('Admin access is not configured yet. Please run the admin SQL patch.');
+  }
+
+  if(data!==true){
+    isAdmin=false;
+    updateAdminNav();
+    return toast('Admin access only.');
+  }
+
+  isAdmin=true;
+  updateAdminNav();
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='admin'));
+  document.querySelectorAll('.nav button,.mobileNav button').forEach(b=>b.classList.toggle('active',b.dataset.v==='admin'));
+  window.scrollTo({top:0,behavior:'smooth'});
+  await loadAdminStudents();
+}
+
+function renderAdminStudents(){
+  const box=document.getElementById('adminStudentsTable');
+  const count=document.getElementById('adminStudentCount');
+  const search=(document.getElementById('adminStudentSearch')?.value||'').trim().toLowerCase();
+
+  if(!box) return;
+
+  const filtered=adminStudents.filter(s=>
+    [s.name,s.email,s.phone,s.department,s.year,s.hostel]
+      .map(v=>String(v??'').toLowerCase())
+      .join(' ')
+      .includes(search)
+  );
+
+  if(count) count.textContent=filtered.length+' of '+adminStudents.length+' students';
+
+  if(!filtered.length){
+    box.innerHTML='<div class="empty">No registered students match your search.</div>';
+    return;
+  }
+
+  box.innerHTML='<div class="adminTableWrap"><table class="adminTable"><thead><tr>'+
+    '<th>Name</th><th>Email</th><th>Mobile</th><th>Department</th><th>Year</th><th>Hostel</th>'+
+    '</tr></thead><tbody>'+
+    filtered.map(s=>
+      '<tr>'+
+        '<td><span class="studentName">'+esc(s.name||'Student')+'</span></td>'+
+        '<td>'+esc(s.email||'Not available')+'</td>'+
+        '<td>'+esc(s.phone||'Not available')+'</td>'+
+        '<td>'+esc(s.department||'Not specified')+'</td>'+
+        '<td>'+esc(s.year||'Not specified')+'</td>'+
+        '<td>'+esc(s.hostel||'Not specified')+'</td>'+
+      '</tr>'
+    ).join('')+
+    '</tbody></table></div>';
+}
+
+async function loadAdminStudents(){
+  if(!isAdmin) return;
+
+  const box=document.getElementById('adminStudentsTable');
+  if(box) box.innerHTML='<div class="empty">Loading registered students…</div>';
+
+  const {data,error}=await supabaseClient.rpc('get_registered_students');
+  if(error){
+    console.error('Registered students load error:',error);
+    if(box) box.innerHTML='<div class="empty">Could not load registered students. The admin SQL patch may need to be run in Supabase.</div>';
+    return toast(error.message || 'Could not load registered students.');
+  }
+
+  adminStudents=data||[];
+  renderAdminStudents();
+}
+
 function bootSignedOut(){
   currentUser=null;
   currentProfile=null;
   items=[]; mineItems=[]; requests=[]; needs=[]; favorites=[]; activity=[];
+  adminStudents=[];
+  isAdmin=false;
+  updateAdminNav();
   setAppVisible(false);
   authMode('login');
   if(refreshTimer){clearInterval(refreshTimer);refreshTimer=null;}
@@ -578,6 +714,7 @@ async function bootSignedIn(user){
   notificationCount=0;
   const nb=document.getElementById('notifyBadge'); if(nb) nb.style.display='none';
   await refreshApp();
+  await loadAdminAccess();
   await subscribeToRealtime();
 
   if(refreshTimer) clearInterval(refreshTimer);
