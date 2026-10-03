@@ -1084,7 +1084,7 @@ async function setItemReplacementCost(id){
   toast('Replacement value updated to ₹'+value.toLocaleString('en-IN')+'.');
 }
 
-function addNeed(e){
+async function addNeed(e){
   e.preventDefault();
 
   const {error}=await supabaseClient.from('needs').insert({
