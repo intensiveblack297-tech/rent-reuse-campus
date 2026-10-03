@@ -414,7 +414,7 @@ async function loadData(){
     supabaseClient.from('needs').select('*').order('created_at',{ascending:false}),
     supabaseClient.from('favorites').select('item_id').eq('student_id',currentProfile.id),
     supabaseClient.from('activity').select('*').eq('student_id',currentProfile.id).order('created_at',{ascending:false}).limit(10),
-    supabaseClient.from('items').select('id,replacement_cost').eq('available',true)
+    supabaseClient.rpc('get_available_item_values')
   ]);
 
   const errors=[listingRes,mineRes,requestRes,needsRes,favoriteRes,activityRes,valueRes].filter(x=>x.error);
