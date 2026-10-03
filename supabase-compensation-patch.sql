@@ -215,3 +215,21 @@ begin
 exception
   when duplicate_object then null;
 end $$;
+
+
+-- Public to signed-in campus users so Browse cards can show the liability amount
+-- without exposing unrelated item columns.
+create or replace function public.get_available_item_values()
+returns table (id uuid, replacement_cost numeric(10,2))
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select i.id, i.replacement_cost
+  from public.items i
+  where i.available = true;
+$$;
+
+revoke execute on function public.get_available_item_values() from public, anon;
+grant execute on function public.get_available_item_values() to authenticated;
